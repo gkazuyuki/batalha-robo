@@ -1,0 +1,66 @@
+#!/usr/bin/python3
+
+"""
+Lê, na entrada padrão, um programa na linguagem de montagem da máquina
+virtual e retorna um programa em C que executa este programa.
+
+Uso:
+    montador < entrada > saida
+"""
+
+from sys import stdin
+
+l = stdin.readline() # Método de FileObject, retorna string
+ip = 0
+tabsim = {}
+
+print("INSTR prog[] = {")
+while l:
+    label = op = ""
+    arg   = 0
+    try:
+        l = l[:l.index('#')] # Remove comentário
+    except:
+        pass
+    keys = l.split()
+    if len(keys) > 0 and keys[0].endswith(":"):
+        label = keys[0][:-1]              #jogando fora o ':'
+        tabsim[label]=ip
+        keys.pop(0)
+    if len(keys) > 0: # E se op for inválido?
+        op = keys.pop(0)
+"""
+2.1.3 Conjunto de instruções
+[...]
+Em todos os casos, os operandos, se houver, devem ser verificados quanto
+à compatibilidade da operação.
+[...]
+"""
+# Tal verificação é feita aqui ou em tempo de execução do programa montado?
+    if len(keys) > 0:
+        arg = keys.pop(0)
+        if arg in tabsim:
+            arg = tabsim[arg]
+    if op != "":
+        print("  {%s, %s},"%(op,arg))
+    else:
+        print() # Linha vazia
+    l = stdin.readline()
+    ip += 1
+print("};")
+
+print("""
+
+int main(int ac, char **av) {
+  Maquina *maq = cria_maquina(prog);
+  exec_maquina(maq, %d);
+  puts("---");
+  destroi_maquina(maq);
+  return 0;
+}
+""" % ip) # prog só vai rodar uma vez
+# ac e av não são usadas!
+
+# Local variables:
+# mode: python
+# End:
