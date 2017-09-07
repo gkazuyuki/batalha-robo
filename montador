@@ -29,14 +29,16 @@ while l:
         keys.pop(0)
     if len(keys) > 0: # E se op for inválido?
         op = keys.pop(0)
-"""
-2.1.3 Conjunto de instruções
-[...]
-Em todos os casos, os operandos, se houver, devem ser verificados quanto
-à compatibilidade da operação.
-[...]
-"""
-# Tal verificação é feita aqui ou em tempo de execução do programa montado?
+
+    """
+    2.1.3 Conjunto de instruções
+    [...]
+    Em todos os casos, os operandos, se houver, devem ser verificados quanto
+    à compatibilidade da operação.
+    [...]
+    """
+    # Tal verificação é feita aqui ou em tempo de execução do programa montado?
+
     if len(keys) > 0:
         arg = keys.pop(0)
         if arg in tabsim:
