@@ -49,6 +49,7 @@ Maquina *cria_maquina(INSTR *p) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
+  m->rbp = 0;
   m->prog = p;
   return m;
 }

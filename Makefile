@@ -1,5 +1,6 @@
 motor: maq.o pilha.o motor.o
 
-clean:
-	rm -f motor *.o
+test: maq.o pilha.o test.o # Remova-me
 
+clean:
+	rm -f motor test *.o

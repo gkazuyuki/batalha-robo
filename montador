@@ -14,7 +14,11 @@ l = stdin.readline() # Método de FileObject, retorna string
 ip = 0
 tabsim = {}
 
-print("INSTR prog[] = {")
+print ("""
+#include <stdio.h>
+#include "maq.h"
+
+INSTR prog[] = {""")
 while l:
     label = op = ""
     arg   = 0
@@ -45,23 +49,20 @@ while l:
             arg = tabsim[arg]
     if op != "":
         print("  {%s, %s},"%(op,arg))
+        ip += 1
     else:
         print() # Linha vazia
     l = stdin.readline()
-    ip += 1
 print("};")
 
 print("""
-
 int main(int ac, char **av) {
   Maquina *maq = cria_maquina(prog);
   exec_maquina(maq, %d);
-  puts("---");
   destroi_maquina(maq);
   return 0;
-}
-""" % ip) # prog só vai rodar uma vez
-# ac e av não são usadas!
+}""" % 10000) # Arbitrário
+# ac e av não são usadas
 
 # Local variables:
 # mode: python
