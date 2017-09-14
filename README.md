@@ -11,7 +11,7 @@ Progresso:
 * Implementar uso de variáveis locais para funções ( )
 * Implementar instruções STL e RCL ( )
 * Adaptar instrução RET ( )
-* Finalizar montador (X)
+* Finalizar montador ( )
 * Elaborar testes ( )
 
 ### Links úteis
@@ -22,3 +22,15 @@ Progresso:
 
 * [Referência rápida: C](http://www.cprogramming.com/reference/)
 * [Referência rápida: Python3](https://learnxinyminutes.com/docs/python3/)
+
+### Notas
+
+Da descrição: "Uso de variáveis locais para funções. Estas variáveis ficarão na
+pilha de execução, de forma parecida com o que ocorre no assembler". Se isso se
+trata de funções em linguagem robô há um problema: sem um linker não dá pra
+desviar pra intruções abaixo da instrução de desvio. Modifiquei o montador pra
+fazer isso mesmo que não seja seu objetivo.
+Coloquei uma váriavel rbp na struct da máquina. Assim como se faria em
+assembly, a pilha perde sua abstração.
+Também da descrição: "A instrução RET deve acertar o valor do registrador de
+base antes de desempilhar o endereço de retorno". Não sei o que isso quer dizer.

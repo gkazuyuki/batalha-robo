@@ -10,9 +10,29 @@ Uso:
 
 from sys import stdin
 
-l = stdin.readline() # Método de FileObject, retorna string
+pre = deepcopy(stdin)
+l = pre.readline() # Método de FileObject, retorna string
+
 ip = 0
 tabsim = {}
+
+# Trata labels
+while l:
+    try:
+        l = l[:l.index('#')] # Remove comentário
+    except:
+        pass
+    keys = l.split()
+    if len(keys) > 0 and keys[0].endswith(":"):
+        label = keys[0][:-1]              #jogando fora o ':'
+        tabsim[label]=ip
+        keys.pop(0)
+    if len(keys) > 0:
+        ip += 1
+    l = pre.readline()
+
+l = stdin.readline()
+ip = 0
 
 print ("""
 #include <stdio.h>
