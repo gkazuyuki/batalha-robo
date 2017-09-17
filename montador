@@ -10,12 +10,15 @@ Uso:
 
 from sys import stdin
 
+# Add
 pre = deepcopy(stdin)
 l = pre.readline() # Método de FileObject, retorna string
+# Add
 
 ip = 0
 tabsim = {}
 
+# Add
 # Trata labels
 while l:
     try:
@@ -33,6 +36,7 @@ while l:
 
 l = stdin.readline()
 ip = 0
+# Add
 
 print ("""
 #include <stdio.h>
@@ -54,6 +58,7 @@ while l:
     if len(keys) > 0: # E se op for inválido?
         op = keys.pop(0)
 
+# Add
     """
     2.1.3 Conjunto de instruções
     [...]
@@ -61,7 +66,8 @@ while l:
     à compatibilidade da operação.
     [...]
     """
-    # Tal verificação é feita aqui ou em tempo de execução do programa montado?
+# Tal verificação é feita aqui ou em tempo de execução do programa montado?
+# Add
 
     if len(keys) > 0:
         arg = keys.pop(0)
@@ -75,6 +81,7 @@ while l:
     l = stdin.readline()
 print("};")
 
+# Add
 print("""
 int main(int ac, char **av) {
   Maquina *maq = cria_maquina(prog);
@@ -83,6 +90,7 @@ int main(int ac, char **av) {
   return 0;
 }""" % 10000) # Arbitrário
 # ac e av não são usadas
+# Add
 
 # Local variables:
 # mode: python

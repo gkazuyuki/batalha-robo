@@ -31,8 +31,6 @@ char *CODES[] = {
   "RCL",
   "END",
   "PRN",
-  "STL",
-  "RCE"
 };
 #else
 #  define D(X)
@@ -51,7 +49,6 @@ Maquina *cria_maquina(INSTR *p) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
-  m->rbp = 0;
   m->prog = p;
   return m;
 }
@@ -122,7 +119,6 @@ void exec_maquina(Maquina *m, int n) {
 	  ip = arg;
 	  continue;
 	case RET:
-	  m->rbp = 0; /* Isso faz sentido? */
 	  ip = desempilha(exec);
 	  break;
 	case EQ:
@@ -171,13 +167,6 @@ void exec_maquina(Maquina *m, int n) {
 	  return;
 	case PRN:
 	  printf("%d\n", desempilha(pil));
-	  break;
-	/* Pilha perde abstração */
-	case STL:
-	  exec->val[m->rbp + arg] = desempilha(pil);
-	  break;
-	case RCE:
-	  empilha(pil, exec->val[m->rbp + arg]);
 	  break;
 	}
 	D(imprime(pil,5));
