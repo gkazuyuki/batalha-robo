@@ -34,7 +34,7 @@ char *CODES[] = {
   "STL",
   "RCE",
   "ALC",
-  "FRE",
+  "FRE"
 };
 #else
 #  define D(X)
@@ -66,6 +66,8 @@ void destroi_maquina(Maquina *m) {
 #define pil (&m->pil)
 #define exec (&m->exec)
 #define prg (m->prog)
+#define base (m->base)
+#define bases (&m->bases)
 
 void exec_maquina(Maquina *m, int n) {
   int i;
@@ -120,16 +122,16 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	case CALL:
 	  empilha(exec, ip);
-	  base = exec->topo;
-	  empilha(bases, base);
-      ip = arg;
+      base = exec->topo;
+      empilha(bases, base);
+	  ip = arg;
 	  continue;
 	case RET:
-		desempilha(bases);
-		if (bases->topo != 0)
-			base = bases->val[bases->topo - 1];
-		ip = desempilha(exec);
-		break;
+        desempilha(bases);
+        if (bases->topo != 0)
+            base = bases->val[bases->topo - 1];
+      ip = desempilha(exec);
+	  break;
 	case EQ:
 	  if (desempilha(pil) == desempilha(pil))
 		empilha(pil, 1);
@@ -177,23 +179,22 @@ void exec_maquina(Maquina *m, int n) {
 	case PRN:
 	  printf("%d\n", desempilha(pil));
 	  break;
-	// add
-	case STL:
-	  exec->val[base + arg] = desempilha(pil);
-      break;
-	case RCE:
-	  empilha(pil, exec->val[base + arg]);
-      break;
-	case ALC:
-	  exec->topo += arg;
-	  break;
-	case FRE:
-	  exec->topo -= arg;
-	  break;
-	}
-	//add
+    case STL:
+        exec->val[base + arg] = desempilha(pil);
+        break;
+    case RCE:
+        empilha(pil, exec->val[base + arg]);
+        break;
+    case ALC:
+        exec->topo += arg;
+        break;
+    case FRE:
+        exec->topo -= arg;
+        break;
+    }
 	D(imprime(pil,5));
 	D(puts("\n"));
+
 	ip++;
   }
 }

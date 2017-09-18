@@ -29,7 +29,7 @@ while l:
     keys = l.split()
     if len(keys) > 0 and keys[0].endswith(":"):
         label = keys[0][:-1]              #jogando fora o ':'
-        tabsim[label]=ip
+        tabsim[label] = ip
         keys.pop(0)
     if len(keys) > 0:
         op = keys.pop(0)
@@ -39,21 +39,22 @@ while l:
             arg = tabsim[arg]
     if op != "":
         print("  {%s, %s},"%(op,arg))
+        ip += 1
     else:
         print()
     l = stdin.readline()
-    ip += 1
 print("};")
-    
-# Add
 print("""
 int main(int ac, char **av) {
   Maquina *maq = cria_maquina(prog);
   exec_maquina(maq, """ + str(ip) + """);
   destroi_maquina(maq);
   return 0;
-}""") # Arbitrário
-# add
+}""")
+
+
+
+
 
 # Local variables:
 # mode: python

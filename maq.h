@@ -5,15 +5,11 @@
 typedef struct {
   Pilha pil;
   Pilha exec;
-  //add
-  Pilha bases; // Pilha das bases
-  int base; // Base da função local
-  //add
+  Pilha bases;
   OPERANDO Mem[MAXMEM];
   INSTR *prog;
+  int base;
   int ip;
-
-  int rbp;
 } Maquina;
 
 Maquina *cria_maquina(INSTR *p);
