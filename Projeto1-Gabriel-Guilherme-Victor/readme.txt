@@ -21,3 +21,8 @@ Comentários sobre a implementação:
       		o programador de FRE em todos os elementos alocados pela função antes de encerrá-la.
     *CALL: Agora a CALL também empilha a nova base da pilha exec.
     *RET: Agora a RET também pega a base da pilha exec da função anterior.
+
+O arquivo "euclides" contém um exemplo de programa em linguagem de máquina. Para
+executá-lo utilize os seguintes comandos:
+./montador < euclides > mdc.c && make mdc
+./mdc

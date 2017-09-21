@@ -48,10 +48,10 @@ print("};")
 print("""
 int main(int ac, char **av) {
   Maquina *maq = cria_maquina(prog);
-  exec_maquina(maq, atoi(av[1]));
+  exec_maquina(maq, %d);
   destroi_maquina(maq);
   return 0;
-}""")
+}"""%(10000))
 
 
 

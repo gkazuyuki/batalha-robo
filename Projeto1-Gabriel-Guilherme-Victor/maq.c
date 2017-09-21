@@ -5,7 +5,7 @@
 /* #define DEBUG */
 
 #ifdef DEBUG
-#  define D(X) X
+#define D(X) X
 char *CODES[] = {
   "PUSH",
   "POP",
