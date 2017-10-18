@@ -1,8 +1,4 @@
 typedef struct {
-    int x, y;
-    } pos;
-
-typedef struct {
     int numb_robots;
     pos *robots;
     Maquina **robo;

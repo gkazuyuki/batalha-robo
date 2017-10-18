@@ -3,6 +3,10 @@
 #define MAXMEM 100
 
 typedef struct {
+    int x, y;
+    } pos;
+
+typedef struct {
   Pilha pil;
   Pilha exec;
   Pilha bases;
@@ -10,6 +14,8 @@ typedef struct {
   INSTR *prog;
   int base;
   int ip;
+  pos position;
+  int n_crystalls;
 } Maquina;
 
 Maquina *cria_maquina(INSTR *p);

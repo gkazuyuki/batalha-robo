@@ -52,6 +52,9 @@ Maquina *cria_maquina(INSTR *p) {
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
   m->prog = p;
+  m->n_crystalls = 0;
+  int x = rand()%n, y = rand()%n;
+
   return m;
 }
 
