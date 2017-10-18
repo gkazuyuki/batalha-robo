@@ -5,24 +5,27 @@
 Como utilizar o montador:
     montador < entrada > saida
       -Entrada: Arquivo de baixo nível que será interpretado pela máquina.
-      -Saída: Arquivo .c que onde o programa interpretado será gravado. O programa recebe como
-      			argumento quantas instruções serão executadas.
+      -Saída: Arquivo .c que onde o programa interpretado será gravado. O programa
+        recebe como argumento quantas instruções serão executadas, se o argumento
+        não for dado o programa possui um default de 1000 execuções.
 
 Comentários sobre a implementação:
-	*bases: Essa pilha foi adicionada para guardar a posição das bases de memória local da pilha exec.
+	*bases: Essa pilha foi adicionada para guardar a posição das bases de memória
+        local da pilha exec.
     *base: Argumento que contém a base atual da pilha exec.
-    *STL: Essa função adiciona um argumento na pilha exec. É importante notar que a base da pilha está
-      acima do endereço de retorno, ou seja, igual ao topo da pilha após empilhar o IP.
+    *STL: Essa função adiciona um argumento na pilha exec. É importante notar que
+        a base da pilha está acima do endereço de retorno, ou seja, igual ao topo
+        da pilha após empilhar o IP.
         Exemplo: Para guardar uma variável na primeira posição da memória local, o comando é:
                 	STL 0;
 	*RCE: Remove da posição base + arg o elemento da pilha exec.
 	*ALC: Soma arg ao topo da pilha (pilha += arg).
-    *FRE: Retira arg do topo da pilha (pha -= arg). Para execução correta do Programa é nescessário que
-      		o programador de FRE em todos os elementos alocados pela função antes de encerrá-la.
+    *FRE: Retira arg do topo da pilha (pha -= arg). Para execução correta do
+        programa é nescessário que o programador de FRE em todos os elementos
+        alocados pela função antes de encerrá-la.
     *CALL: Agora a CALL também empilha a nova base da pilha exec.
     *RET: Agora a RET também pega a base da pilha exec da função anterior.
 
-O arquivo "euclides" contém um exemplo de programa em linguagem de máquina. Para
-executá-lo utilize os seguintes comandos:
-./montador < euclides > mdc.c && make mdc
-./mdc
+Observação: Como certos arquivos originais fornecidos pelo professor não fazem
+    parte do projeto em si eles não estão sendo mandados juntos (fibo, motor.c e
+    Makefile).     

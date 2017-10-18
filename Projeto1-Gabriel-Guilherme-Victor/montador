@@ -47,11 +47,14 @@ while l:
 print("};")
 print("""
 int main(int ac, char **av) {
+  int instructions = 1000;
   Maquina *maq = cria_maquina(prog);
-  exec_maquina(maq, %d);
+  if (ac >= 2)
+    instructions = atoi(av[1]);
+  exec_maquina(maq, instructions);
   destroi_maquina(maq);
   return 0;
-}"""%(10000))
+}""")
 
 
 
