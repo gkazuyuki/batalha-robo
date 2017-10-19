@@ -1,31 +1,11 @@
 void Atualiza()
 {
-    OPERANDO tmp, aux;
     for (int i = 0; i < arena.army_number; i++){
         /*Já cuida do fato de qur se um exercito foi removido ele não sera
          *considerado por ter
         */
         for (int j = 0; j < arena.army_vector[i].numb_robots; j++){
             exec_maquina(arena.army_vector[i].robo[j], 50);
-            tmp = desempilha(arena.army_vector[i].robo[j].pil);
-            if (tmp.t == ACAO) {
-                aux = desempilha(arena.army_vector[i].robo[j].pil);
-                if (tmp.ac == 0) {
-                    //exec a mov
-                }
-                else if (tmp.ac == 10) {
-                    //exec a FETCH
-                }
-                else if (tmp.ac == 20) {
-                    //exec a DEPO
-                }
-                else if (tmp.ac == 30) {
-                    //exec a ATK
-                }
-            }
-            else {
-                empilha(arena.army_vector[i].robo[j].pil, tmp);
-            }
         }
     }
     return;
@@ -60,7 +40,124 @@ void RemoveExercito(char *name, int n)
     }
 }
 
-void Sistema(Maquina *robo, int opcode, pos cords)
+void Sistema(Maquina *robo)
 {
+    OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
+    if (tmp.ac == 0) {
+        if (aux.n == 0) {
+            if (arena.Board[][].robo == NULL) {
+                &robo.pos.x = ;
+                &robo.pos.y = ;
+            }
+        }
+        else if (aux.n == 1) {
+            if (arena.Board[][].robo == NULL) {
+                &robo.pos.x = ;
+                &robo.pos.y = ;
+            }
+        }
+        else if (aux.n == 2) {
+            if (arena.Board[][].robo == NULL) {
+                &robo.pos.x = ;
+                &robo.pos.y = ;
+            }
+        }
+        else if (aux.n == 3) {
+            if (arena.Board[][].robo == NULL) {
+                &robo.pos.x = ;
+                &robo.pos.y = ;
+            }
+        }
+        else if (aux.n == 4) {
+            if (arena.Board[][].robo == NULL) {
+                &robo.pos.x = ;
+                &robo.pos.y = ;
+            }
+        }
+        else if (aux.n == 5) {
+            if (arena.Board[][].robo == NULL) {
+                &robo.pos.x = ;
+                &robo.pos.y = ;
+            }
+        }
+    }
+    else if (tmp.ac == 10) {
+        if (aux.n == 0) {
+            if (arena.Board[][].crystall > 0) {
+                arena.Board[][].crystall--;
+                &robo.n_crystalls++;
+            }
+        }
+        else if (aux.n == 1) {
+            if (arena.Board[][].crystall > 0) {
+                arena.Board[][].crystall--;
+                &robo.n_crystalls++;
+            }
+        }
+        else if (aux.n == 2) {
+            if (arena.Board[][].crystall > 0) {
+                arena.Board[][].crystall--;
+                &robo.n_crystalls++;
+            }
+        }
+        else if (aux.n == 3) {
+            if (arena.Board[][].crystall > 0) {
+                arena.Board[][].crystall--;
+                &robo.n_crystalls++;
+            }
+        }
+        else if (aux.n == 4) {
+            if (arena.Board[][].crystall > 0) {
+                arena.Board[][].crystall--;
+                &robo.n_crystalls++;
+            }
+        }
+        else if (aux.n == 5) {
+            if (arena.Board[][].crystall > 0) {
+                arena.Board[][].crystall--;
+                &robo.n_crystalls++;
+            }
+        }
+    }
+    else if (tmp.ac == 20) {
+        if (aux.n == 0) {
 
+        }
+        else if (aux.n == 1) {
+
+        }
+        else if (aux.n == 2) {
+
+        }
+        else if (aux.n == 3) {
+
+        }
+        else if (aux.n == 4) {
+
+        }
+        else if (aux.n == 5) {
+
+        }
+    }
+    else if (tmp.ac == 30) {
+        if (aux.n == 0) {
+
+        }
+        else if (aux.n == 1) {
+
+        }
+        else if (aux.n == 2) {
+
+        }
+        else if (aux.n == 3) {
+
+        }
+        else if (aux.n == 4) {
+
+        }
+        else if (aux.n == 5) {
+
+        }
+    }
+    return;
 }

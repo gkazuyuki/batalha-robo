@@ -331,8 +331,8 @@ void exec_maquina(Maquina *m, int n) {
     	tmp.t = ACAO;
         tmp.ac = 0;
         empilha(pil, tmp);
-        ip++;
-        return;
+        Sistema(m);
+        break;
     case FETCH:
         tmp.t = num;
         tmp.ac = arg.n;
@@ -340,8 +340,8 @@ void exec_maquina(Maquina *m, int n) {
     	tmp.t = ACAO;
         tmp.ac = 10;
         empilha(pil, tmp);
-        ip++;
-        return;
+        Sistema(m);
+        break;
     case DEPO:
         tmp.t = num;
         tmp.ac = arg.n;
@@ -349,8 +349,8 @@ void exec_maquina(Maquina *m, int n) {
         tmp.t = ACAO;
         tmp.ac = 20;
         empilha(pil, tmp);
-        ip++;
-        return;
+        Sistema(m);
+        break;
     case ATK:
         tmp.t = num;
         tmp.ac = arg.n;
@@ -358,8 +358,8 @@ void exec_maquina(Maquina *m, int n) {
     	tmp.t = ACAO;
         tmp.ac = 30;
         empilha(pil, tmp);
-        ip++;
-        return;
+        Sistema(m);
+        break;
     }
 	D(imprime(pil,5));
 	D(puts("\n"));
