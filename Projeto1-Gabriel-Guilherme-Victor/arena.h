@@ -1,3 +1,5 @@
+#include "maq.h"
+
 typedef struct {
     int numb_robots;
     pos *robots;
@@ -8,7 +10,7 @@ typedef struct {
 
 typedef struct  {
     Maquina *robo;
-    short unsigned int terrain, crystall, HQ;
+    int terrain, crystall, HQ, roboID;
     } node;
 
 typedef node **board;
@@ -18,6 +20,7 @@ typedef struct {
     int army_number;
     army *army_vector;
     double time;
+    int size; //Estamos considerando arena quadrada
     } Arena;
 
 

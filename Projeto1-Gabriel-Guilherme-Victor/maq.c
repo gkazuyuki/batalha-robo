@@ -32,7 +32,9 @@ char *CODES[] = {
   "STL",
   "RCE",
   "ALC",
-  "FRE"
+  "FRE",
+  "ATR",
+  "FETCH"
 };
 #else
 #  define D(X)
@@ -53,7 +55,13 @@ Maquina *cria_maquina(INSTR *p) {
   m->ip = 0;
   m->prog = p;
   m->n_crystalls = 0;
-  int x = rand()%n, y = rand()%n;
+  int x,y;
+  do {
+  	x = rand()%arena.size; y = rand()%arena.size; /
+  } while (arena.Board[x][y] != 0);
+
+  m->position.x = x; m->position.y = y;
+  // Podemos add vida, energia etc bla bla 
 
   return m;
 }
@@ -93,105 +101,230 @@ void exec_maquina(Maquina *m, int n) {
 	  empilha(pil, tmp);
 	  break;
 	case ADD:
-	  empilha(pil, desempilha(pil)+desempilha(pil));
+		OPERANDO x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+		tmp.n = x.n + y.n;
+		tmp.t = NUM;
+	  empilha(pil, tmp);
 	  break;
 	case SUB:
-	  tmp = desempilha(pil);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+		tmp.n = y.n - x.n;
+		tmp.t = NUM;
 	  empilha(pil, desempilha(pil)-tmp);
 	  break;
 	case MUL:
-	  empilha(pil, desempilha(pil)*desempilha(pil));
+	  OPERANDO x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+		tmp.n = x.n * y.n;
+		tmp.t = NUM;
+	  empilha(pil, tmp);
 	  break;
 	case DIV:
-	  tmp = desempilha(pil);
-	  empilha(pil, desempilha(pil)/tmp);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+		tmp.n = y.n / x.n;
+		tmp.t = NUM;
+	  empilha(pil, tmp);
 	  break;
 	case JMP:
-	  ip = arg;
+	  ip = arg.n;
 	  continue;
 	case JIT:
-	  if (desempilha(pil) != 0) {
-		ip = arg;
+	  if (desempilha(pil).n != 0) {
+		ip = arg.n;
 		continue;
 	  }
 	  break;
 	case JIF:
-	  if (desempilha(pil) == 0) {
-		ip = arg;
+	  if (desempilha(pil).n == 0) {
+		ip = arg.n;
 		continue;
 	  }
 	  break;
 	case CALL:
-	  empilha(exec, ip);
-      base = exec->topo;
-      empilha(bases, base);
+		OPERANDO ip2;
+		ip2.t = NUM;
+		ip2.n = ip; 
+	  empilha(exec, ip2);
+    base.n = exec->topo;
+    empilha(bases, base);
 	  ip = arg;
 	  continue;
 	case RET:
         desempilha(bases);
         if (bases->topo != 0)
-            base = bases->val[bases->topo - 1];
+            base.n = bases->val[bases->topo - 1].n;
       ip = desempilha(exec);
 	  break;
 	case EQ:
-	  if (desempilha(pil) == desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil);
+	  tmp.t = NUM;
+	  tmp.n = 0;
+	  if (x.t == y.t) {
+	  	if (x.t == NUM) {
+	  		if (x.n == y.n)
+	  			tmp.n = 1;
+	    }
+	    else if (x.t == ACAO) {
+	  	  if (x.ac == y.ac)
+	  	  	tmp.n = 1;
+	  	}
+		  else if (x.t == VAR) {
+		  	if (x.v == y.v)
+		  		tmp.n = 1
+		  }
+		}
+		empilha(pil, tmp);
 	  break;
 	case GT:
-	  if (desempilha(pil) < desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil);
+	  tmp.t = NUM;
+	  tmp.n = 0;
+	  if (x.t == y.t) {
+	  	if (x.t == NUM) {
+	  		if (x.n >= y.n)
+	  			tmp.n = 1;
+	    }
+	    else if (x.t == ACAO) {
+	  	  if (x.ac >= y.ac)
+	  	  	tmp.n = 1;
+	  	}
+		  else if (x.t == VAR) {
+		  	if (x.v >= y.v)
+		  		tmp.n = 1
+		  }
+		}
+		empilha(pil, tmp);
 	  break;
 	case GE:
-	  if (desempilha(pil) <= desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil);
+	  tmp.t = NUM;
+	  tmp.n = 0;
+	  if (x.t == y.t) {
+	  	if (x.t == NUM) {
+	  		if (x.n >= y.n)
+	  			tmp.n = 1;
+	    }
+	    else if (x.t == ACAO) {
+	  	  if (x.ac >= y.ac)
+	  	  	tmp.n = 1;
+	  	}
+		  else if (x.t == VAR) {
+		  	if (x.v >= y.v)
+		  		tmp.n = 1
+		  }
+		}
+		empilha(pil, tmp);
 	  break;
 	case LT:
-	  if (desempilha(pil) > desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil);
+	  tmp.t = NUM;
+	  tmp.n = 0;
+	  if (x.t == y.t) {
+	  	if (x.t == NUM) {
+	  		if (x.n < y.n)
+	  			tmp.n = 1;
+	    }
+	    else if (x.t == ACAO) {
+	  	  if (x.ac < y.ac)
+	  	  	tmp.n = 1;
+	  	}
+		  else if (x.t == VAR) {
+		  	if (x.v < y.v)
+		  		tmp.n = 1
+		  }
+		}
+		empilha(pil, tmp);
 	  break;
 	case LE:
-	  if (desempilha(pil) >= desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil);
+	  tmp.t = NUM;
+	  tmp.n = 0;
+	  if (x.t == y.t) {
+	  	if (x.t == NUM) {
+	  		if (x.n <= y.n)
+	  			tmp.n = 1;
+	    }
+	    else if (x.t == ACAO) {
+	  	  if (x.ac <= y.ac)
+	  	  	tmp.n = 1;
+	  	}
+		  else if (x.t == VAR) {
+		  	if (x.v <= y.v)
+		  		tmp.n = 1
+		  }
+		}
+		empilha(pil, tmp);
 	  break;
 	case NE:
-	  if (desempilha(pil) != desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
+	  OPERANDO x = desempilha(pil), y = desempilha(pil);
+	  tmp.t = NUM;
+	  tmp.n = 0;
+	  if (x.t == y.t) {
+	  	if (x.t == NUM) {
+	  		if (x.n != y.n)
+	  			tmp.n = 1;
+	    }
+	    else if (x.t == ACAO) {
+	  	  if (x.ac != y.ac)
+	  	  	tmp.n = 1;
+	  	}
+		  else if (x.t == VAR) {
+		  	if (x.v != y.v)
+		  		tmp.n = 1
+		  }
+		}
+		empilha(pil, tmp);
 	  break;
 	case STO:
 	  m->Mem[arg] = desempilha(pil);
 	  break;
 	case RCL:
-	  empilha(pil,m->Mem[arg]);
+	  empilha(pil,m->Mem[arg.n]);
 	  break;
 	case END:
 	  return;
 	case PRN:
-	  printf("%d\n", desempilha(pil));
+	  OPERANDO x = desempilha(pil);
+	  if (x.t == NUM) printf("%d\n", x.n);
+	  else if (x.t == ACAO) printf ("%d\n", x.ac);
+	  else if (x.t == VAR) printf ("%d\n", x.v);
 	  break;
     case STL:
-        exec->val[base + arg] = desempilha(pil);
+        exec->val[base.n + arg.n] = desempilha(pil);
         break;
     case RCE:
-        empilha(pil, exec->val[base + arg]);
+        empilha(pil, exec->val[base.n + arg.n]);
         break;
     case ALC:
-        exec->topo += arg;
+        exec->topo += arg.n;
         break;
     case FRE:
-        exec->topo -= arg;
+        exec->topo -= arg.n;
         break;
+    case ATR:
+    	OPERANDO x = desempilha(pil); //ver esse tipo
+    	OPERANDO y; 
+    	y.t = NUM;
+    	
+    	if (arg == 0) {
+    		y.n = x.cel.terrain;
+    		empilha(pil, y);
+    	}
+    	else if (arg == 1) {
+    		y.n = x.cel.crystall;
+    		empilha(pil, y);
+    	}
+    	else if (arg == 2) {
+    		y.n = x.cel.roboID;
+    		empilha(pil, y);
+    	}
+    	else {
+    		y.n = x.cel.HQ;
+    		empilha(pil, y);
+    	}
+    	break;
+    case FETCH:
+    	tmp 
+    	break;
     }
 	D(imprime(pil,5));
 	D(puts("\n"));

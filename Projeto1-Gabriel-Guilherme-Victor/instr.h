@@ -26,26 +26,28 @@ typedef enum {
   RCE,
   ALC,
   FRE,
+  ATR,
+  FETCH 
 } OpCode;
 
 /* Tipos dos operandos */
-/* no momento, são todos inteiros */
 typedef enum {
   NUM,
   ACAO,
-  VAR
+  VAR,
+  CEL,
 } Tipo;
 
 /* Operando */
-/* typedef struct { */
-/*   Tipo t; */
-/*   union { */
-/* 	int n; */
-/* 	int ac; */
-/* 	int v; */
-/*   }; */
-/* } OPERANDO; */
-typedef int OPERANDO;
+typedef struct {
+  Tipo t; 
+  union { 
+ 	  int n; 
+ 	  int ac; 
+ 	  int v;
+    node cel;
+  }; 
+} OPERANDO;
 
 /* Instrução */
 typedef struct {

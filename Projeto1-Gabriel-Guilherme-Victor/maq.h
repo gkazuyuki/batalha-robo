@@ -12,7 +12,7 @@ typedef struct {
   Pilha bases;
   OPERANDO Mem[MAXMEM];
   INSTR *prog;
-  int base;
+  OPERANDO base;
   int ip;
   pos position;
   int n_crystalls;
