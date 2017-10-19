@@ -1,11 +1,31 @@
 void Atualiza()
 {
+    OPERANDO tmp, aux;
     for (int i = 0; i < arena.army_number; i++){
         /*Já cuida do fato de qur se um exercito foi removido ele não sera
          *considerado por ter
         */
         for (int j = 0; j < arena.army_vector[i].numb_robots; j++){
             exec_maquina(arena.army_vector[i].robo[j], 50);
+            tmp = desempilha(arena.army_vector[i].robo[j].pil);
+            if (tmp.t == ACAO) {
+                aux = desempilha(arena.army_vector[i].robo[j].pil);
+                if (tmp.ac == 0) {
+                    //exec a mov
+                }
+                else if (tmp.ac == 10) {
+                    //exec a FETCH
+                }
+                else if (tmp.ac == 20) {
+                    //exec a DEPO
+                }
+                else if (tmp.ac == 30) {
+                    //exec a ATK
+                }
+            }
+            else {
+                empilha(arena.army_vector[i].robo[j].pil, tmp);
+            }
         }
     }
     return;

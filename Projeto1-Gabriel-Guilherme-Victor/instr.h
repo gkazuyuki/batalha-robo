@@ -27,7 +27,10 @@ typedef enum {
   ALC,
   FRE,
   ATR,
-  FETCH 
+  MOV,
+  FETCH,
+  DEPO,
+  ATK 
 } OpCode;
 
 /* Tipos dos operandos */
@@ -40,13 +43,13 @@ typedef enum {
 
 /* Operando */
 typedef struct {
-  Tipo t; 
-  union { 
- 	  int n; 
- 	  int ac; 
+  Tipo t;
+  union {
+ 	  int n;
+ 	  int ac;
  	  int v;
     node cel;
-  }; 
+  };
 } OPERANDO;
 
 /* Instrução */

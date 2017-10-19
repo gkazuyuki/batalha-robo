@@ -34,7 +34,10 @@ char *CODES[] = {
   "ALC",
   "FRE",
   "ATR",
-  "FETCH"
+  "MOV",
+  "FETCH",
+  "DEPO",
+  "ATK"
 };
 #else
 #  define D(X)
@@ -61,7 +64,7 @@ Maquina *cria_maquina(INSTR *p) {
   } while (arena.Board[x][y] != 0);
 
   m->position.x = x; m->position.y = y;
-  // Podemos add vida, energia etc bla bla 
+  // Podemos add vida, energia etc bla bla
 
   return m;
 }
@@ -142,7 +145,7 @@ void exec_maquina(Maquina *m, int n) {
 	case CALL:
 		OPERANDO ip2;
 		ip2.t = NUM;
-		ip2.n = ip; 
+		ip2.n = ip;
 	  empilha(exec, ip2);
     base.n = exec->topo;
     empilha(bases, base);
@@ -302,10 +305,9 @@ void exec_maquina(Maquina *m, int n) {
         break;
     case ATR:
     	OPERANDO x = desempilha(pil); //ver esse tipo
-    	OPERANDO y; 
+    	OPERANDO y;
     	y.t = NUM;
-    	
-    	if (arg == 0) {
+        if (arg == 0) {
     		y.n = x.cel.terrain;
     		empilha(pil, y);
     	}
@@ -322,9 +324,42 @@ void exec_maquina(Maquina *m, int n) {
     		empilha(pil, y);
     	}
     	break;
+    case MOV:
+        tmp.t = num;
+        tmp.ac = arg.n;
+        empilha(pil, tmp);
+    	tmp.t = ACAO;
+        tmp.ac = 0;
+        empilha(pil, tmp);
+        ip++;
+        return;
     case FETCH:
-    	tmp 
-    	break;
+        tmp.t = num;
+        tmp.ac = arg.n;
+        empilha(pil, tmp);
+    	tmp.t = ACAO;
+        tmp.ac = 10;
+        empilha(pil, tmp);
+        ip++;
+        return;
+    case DEPO:
+        tmp.t = num;
+        tmp.ac = arg.n;
+        empilha(pil, tmp);
+        tmp.t = ACAO;
+        tmp.ac = 20;
+        empilha(pil, tmp);
+        ip++;
+        return;
+    case ATK:
+        tmp.t = num;
+        tmp.ac = arg.n;
+        empilha(pil, tmp);
+    	tmp.t = ACAO;
+        tmp.ac = 30;
+        empilha(pil, tmp);
+        ip++;
+        return;
     }
 	D(imprime(pil,5));
 	D(puts("\n"));
