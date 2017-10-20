@@ -281,7 +281,7 @@ void exec_maquina(Maquina *m, int n) {
 	  m->Mem[arg] = desempilha(pil);
 	  break;
 	case RCL:
-	  empilha(pil,m->Mem[arg.n]);
+	  empilha(pil,m->Mem[arg.n]); // Mudar isso (empilhar várias fita)
 	  break;
 	case END:
 	  return;
@@ -304,7 +304,7 @@ void exec_maquina(Maquina *m, int n) {
         exec->topo -= arg.n;
         break;
     case ATR:
-    	OPERANDO x = desempilha(pil); //ver esse tipo
+    	OPERANDO x = desempilha(pil); // mudar para ser um num 0-5 que vai ser a pos
     	OPERANDO y;
     	y.t = NUM;
         if (arg == 0) {
@@ -332,7 +332,8 @@ void exec_maquina(Maquina *m, int n) {
         tmp.ac = 0;
         empilha(pil, tmp);
         Sistema(m);
-        break;
+        ip++;
+        return;
     case FETCH:
         tmp.t = NUM;
         tmp.ac = arg.n;
@@ -341,7 +342,8 @@ void exec_maquina(Maquina *m, int n) {
         tmp.ac = 10;
         empilha(pil, tmp);
         Sistema(m);
-        break;
+        ip++;
+        return;
     case DEPO:
         tmp.t = NUM;
         tmp.ac = arg.n;
@@ -350,7 +352,8 @@ void exec_maquina(Maquina *m, int n) {
         tmp.ac = 20;
         empilha(pil, tmp);
         Sistema(m);
-        break;
+        ip++;
+        return;
     case ATK:
         tmp.t = NUM;
         tmp.ac = arg.n;
@@ -359,7 +362,8 @@ void exec_maquina(Maquina *m, int n) {
         tmp.ac = 30;
         empilha(pil, tmp);
         Sistema(m);
-        break;
+        ip++;
+        return;
     }
 	D(imprime(pil,5));
 	D(puts("\n"));

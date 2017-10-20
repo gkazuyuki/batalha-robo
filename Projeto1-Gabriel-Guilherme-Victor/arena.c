@@ -18,7 +18,7 @@ Arena *InicializaArena(int size, int army_number)
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
             board[i][j].crystall = rand()%3; // 0, 1 ou 2 cristais na posição
-            board[i][j].terrain = rand()%3; //Três tipos de terreno: estrada, montanha, rio
+            board[i][j].terrain = rand()%3; //Três tipos de terreno: estrada, montanha, pantano //tirar esse treco uniforme.
             board[i][j].HQ = 0; //Sem HQ
             board[i][j].roboID = 0; //Inicializa em robos
         }
@@ -36,7 +36,8 @@ void Atualiza()
          *considerado por ter
         */
         for (int j = 0; j < arena.army_vector[i].num_bots; j++){
-            exec_maquina(arena.army_vector[i].robo[j], 50);
+            if (arena.army_vector[i].robo[j])
+                exec_maquina(arena.army_vector[i].robo[j], 50);
         }
     }
     return;
@@ -75,41 +76,68 @@ void RemoveExercito(char *name, int n)
 void Sistema(Maquina *robo)
 {
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
+    int in_river = 0;
+
     if (tmp.ac == 0) {
+        if (arena.Board[robo->pos.x][robo->pos.y - 1].terrain == 2) in_river = 1;
         if (aux.n == 0) {
             if (arena.Board[robo->pos.x][robo->pos.y - 1].robo == NULL) {
                 robo->pos.x = robo->pos.x;
                 robo->pos.y = robo->pos.y - 1;
+                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
+                    if (robo->n_crystalls > 0)
+                        robo->n_crystalls--;
+                }
             }
         }
         else if (aux.n == 1) {
             if (arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo == NULL) {
                 robo->pos.x = robo->pos.x + 1;
                 robo->pos.y = robo->pos.y - 1;
+                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
+                    if (robo->n_crystalls > 0)
+                        robo->n_crystalls--;
+                }
             }
         }
         else if (aux.n == 2) {
             if (arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo == NULL) {
                 robo->pos.x = robo->pos.x + 1;
                 robo->pos.y = robo->pos.y + 1;
+                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
+                    if (robo->n_crystalls > 0)
+                        robo->n_crystalls--;
+                }
             }
         }
         else if (aux.n == 3) {
             if (arena.Board[robo->pos.x][robo->pos.y + 1].robo == NULL) {
                 robo->pos.x = robo->pos.x + 1;
                 robo->pos.y = robo->pos.y + 1;
+                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
+                    if (robo->n_crystalls > 0)
+                        robo->n_crystalls--;
+                }
             }
         }
         else if (aux.n == 4) {
             if (arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo == NULL) {
                 robo->pos.x = robo->pos.x - 1;
                 robo->pos.y = robo->pos.y + 1;
+                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
+                    if (robo->n_crystalls > 0)
+                        robo->n_crystalls--;
+                }
             }
         }
         else if (aux.n == 5) {
-            if (arena.Board[robo->pos.x - 1][robo->pos.y].robo == NULL) {
+            if (arena.Board[robo->pos.x - 1][robo->pos.y].robo == NULL ) {
                 robo->pos.x = robo->pos.x - 1;
                 robo->pos.y = robo->pos.y;
+                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
+                    if (robo->n_crystalls > 0)
+                        robo->n_crystalls--;
+                }
             }
         }
         arena.Board[robo->pos.x][robo->pos.y].robo = robo;
@@ -181,33 +209,87 @@ void Sistema(Maquina *robo)
                     arena.Board[robo->pos.x][robo->pos.y - 1].robo->n_crystalls = 0;
                 }
                 else {
-
+                    arena.Board[robo->pos.x][robo->pos.y - 1].robo = NULL;
+                    //não sei o que esta certo.
+                    arena.Board[robo->pos.x][robo->pos.y - 1].roboID = 0;
+                    free(arena.Board[robo->pos.x][robo->pos.y - 1].robo);
+                    &arena.Board[robo->pos.x][robo->pos.y - 1].robo = NULL;
                 }
             }
         }
         else if (aux.n == 1) {
             if (arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo != NULL) {
-
+                if (arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo->n_crystalls > 0) {
+                    robo->n_crystalls += arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo->n_crystalls;
+                    arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo->n_crystalls = 0;
+                }
+                else {
+                    arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo = NULL;
+                    //não sei o que esta certo.
+                    arena.Board[robo->pos.x + 1][robo->pos.y - 1].roboID = 0;
+                    free(arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo);
+                    &arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo = NULL;
+                }
             }
         }
         else if (aux.n == 2) {
             if (arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo != NULL) {
-
+                if (arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo->n_crystalls > 0) {
+                    robo->n_crystalls += arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo->n_crystalls;
+                    arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo->n_crystalls = 0;
+                }
+                else {
+                    arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo = NULL;
+                    //não sei o que esta certo.
+                    arena.Board[robo->pos.x + 1][robo->pos.y + 1].roboID = 0;
+                    free(arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo);
+                    &arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo = NULL;
+                }
             }
         }
         else if (aux.n == 3) {
             if (arena.Board[robo->pos.x][robo->pos.y + 1].robo != NULL) {
-
+                if (arena.Board[robo->pos.x][robo->pos.y + 1].robo->n_crystalls > 0) {
+                    robo->n_crystalls += arena.Board[robo->pos.x][robo->pos.y + 1].robo->n_crystalls;
+                    arena.Board[robo->pos.x][robo->pos.y + 1].robo->n_crystalls = 0;
+                }
+                else {
+                    arena.Board[robo->pos.x][robo->pos.y + 1].robo = NULL;
+                    //não sei o que esta certo.
+                    arena.Board[robo->pos.x][robo->pos.y + 1].roboID = 0;
+                    free(arena.Board[robo->pos.x][robo->pos.y + 1].robo);
+                    &arena.Board[robo->pos.x][robo->pos.y + 1].robo = NULL;
+                }
             }
         }
         else if (aux.n == 4) {
             if (arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo != NULL) {
-
+                if (arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo->n_crystalls > 0) {
+                    robo->n_crystalls += arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo->n_crystalls;
+                    arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo->n_crystalls = 0;
+                }
+                else {
+                    arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo = NULL;
+                    //não sei o que esta certo.
+                    arena.Board[robo->pos.x - 1][robo->pos.y + 1].roboID = 0;
+                    free(arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo);
+                    &arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo = NULL;
+                }
             }
         }
         else if (aux.n == 5) {
             if (arena.Board[robo->pos.x + 1][robo->pos.y].robo != NULL) {
-
+                if (arena.Board[robo->pos.x + 1][robo->pos.y].robo->n_crystalls > 0) {
+                    robo->n_crystalls += arena.Board[robo->pos.x + 1][robo->pos.y].robo->n_crystalls;
+                    arena.Board[robo->pos.x + 1][robo->pos.y].robo->n_crystalls = 0;
+                }
+                else {
+                    arena.Board[robo->pos.x + 1][robo->pos.y].robo = NULL;
+                    //não sei o que esta certo.
+                    arena.Board[robo->pos.x + 1][robo->pos.y].roboID = 0;
+                    free(arena.Board[robo->pos.x + 1][robo->pos.y].robo);
+                    &arena.Board[robo->pos.x + 1][robo->pos.y].robo = NULL;
+                }
             }
         }
     }
