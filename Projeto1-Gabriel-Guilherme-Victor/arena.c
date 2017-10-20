@@ -1,10 +1,40 @@
+
+
+Arena InicializaArena(int size, int army_number)
+{
+    Arena new_arena;
+    new_arena.size = size;
+    new_arena.army_number = army_number;
+    new_arena.time = ; //FALTA O TEMPO AQUI
+
+    board new_board = emalloc(size*sizeof(node*)); //Criando tabuleiro nxn
+    for (int i = 0; i < size; i++) {
+        board[i] = emalloc(n*sizeof(node));
+    }
+
+    //Inicializa terreno e cristais
+    srand(time(NULL));
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++) {
+            board[i][j].crystall = rand()%3; // 0, 1 ou 2 cristais na posição
+            board[i][j].terrain = rand()%3; //Três tipos de terreno: estrada, montanha, rio
+            board[i][j].HQ = 0; //Sem HQ
+            board[i][j].roboID = 0; //Inicializa em robos
+        }
+    new_arena.Board = new_board;
+
+    army *new_army_vector = emalloc(army_number*sizeof(army)); //IDEIA FAZER ISSO ESTATICAMENTE COM UM TOPO
+
+    return new_arena;
+}
+
 void Atualiza()
 {
     for (int i = 0; i < arena.army_number; i++){
         /*Já cuida do fato de qur se um exercito foi removido ele não sera
          *considerado por ter
         */
-        for (int j = 0; j < arena.army_vector[i].numb_robots; j++){
+        for (int j = 0; j < arena.army_vector[i].num_bots; j++){
             exec_maquina(arena.army_vector[i].robo[j], 50);
         }
     }
@@ -13,8 +43,9 @@ void Atualiza()
 
 void InsereExercito(char *name, int n)
 {
-    arena.army_vector[army_number].numb_robots = n;
+    arena.army_vector[army_number].num_bots = n;
     arena.army_vector[army_number].chapter = malloc(strlen(name)*sizeof(char));
+    arena.HQpos = ; // FALTA INICIALIZAR
     strcpy(arena.army_vector[army_number].chapter, name);
     for (int i = 0; i < n; i++){
          arena.army_vector[army_number].robo[i] = cria_maquina(); //isso tem algum argumento
@@ -27,12 +58,12 @@ void RemoveExercito(char *name, int n)
 {
     for (int i = 0; i < arena.army_number && strcmp(name, arena.army_vector[i].chapter) != 0; i++) {}
     if (i < arena.army_number) {
-        for (int j = 0; j < arena.army_vector[i].numb_robots; j++) {
+        for (int j = 0; j < arena.army_vector[i].num_bots; j++) {
             destroi_maquina(arena.army_vector[i].robo[j]);
         }
         free(arena.army_vector[i].robots);
         free(arena.army_vector[i].chapter);
-        arena.army_vector[i].numb_robots = -1;
+        arena.army_vector[i].num_bots = -1;
 
     }
     else {
@@ -162,4 +193,19 @@ void Sistema(Maquina *robo)
         }
     }
     return;
+}
+
+void *emalloc(size_t size)
+{
+    void *pointer;
+    pointer = malloc(size);
+
+    if (pointer == NULL) {
+        fprintf(stderr,
+                "ERRO: Não foi possível alocar memória suficiente.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    else
+        return pointer;
 }

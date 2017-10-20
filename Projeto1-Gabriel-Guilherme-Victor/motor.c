@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "maq.h"
+#include "arena.h"
 
 INSTR programa[] = {
   {PUSH, 3},
