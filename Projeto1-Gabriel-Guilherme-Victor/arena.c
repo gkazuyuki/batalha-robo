@@ -1,3 +1,34 @@
+#include "arena.h"
+
+pos numbToPos(int n, pos x)
+{
+    pos y;
+    if (aux.n == 0) {
+        y.x = x.x;
+        y.y = x.y - 1;
+    }
+    else if (aux.n == 1) {
+        y.x = x.x + 1;
+        y.y = x.y - 1;
+    }
+    else if (aux.n == 2) {
+        y.x = robo->pos.x + 1;
+        y.y = x.y + 1;
+    }
+    else if (aux.n == 3) {
+        y.x = x.x;
+        y.y = x.y + 1;
+    }
+    else if (aux.n == 4) {
+        y.x = x.x - 1;
+        y.y = x.y + 1;
+    }
+    else if (aux.n == 5) {
+        y.x = x.x - 1;
+        y.y = x.y;
+    }
+    return y;
+}
 
 
 Arena *InicializaArena(int size, int army_number)
@@ -6,7 +37,7 @@ Arena *InicializaArena(int size, int army_number)
     new_arena->size = size;
     new_arena->army_number = army_number;
     new_arena->top = 0;
-    new_arena->time = ; //FALTA O TEMPO AQUI
+    new_arena->time = 0; //FALTA O TEMPO AQUI
 
     board new_board = emalloc(size*sizeof(node*)); //Criando tabuleiro nxn
     for (int i = 0; i < size; i++) {
@@ -40,6 +71,7 @@ void Atualiza()
                 exec_maquina(arena.army_vector[i].robo[j], 50);
         }
     }
+    new_arena->time += 1;
     return;
 }
 
@@ -61,7 +93,8 @@ void RemoveExercito(char *name, int n)
     for (int i = 0; i < arena.army_number && strcmp(name, arena.army_vector[i].chapter) != 0; i++) {}
     if (i < arena.army_number) {
         for (int j = 0; j < arena.army_vector[i].num_bots; j++) {
-            destroi_maquina(arena.army_vector[i].robo[j]);
+            if (arena.army_vector[i].robo[j])
+                destroi_maquina(arena.army_vector[i].robo[j]);
         }
         free(arena.army_vector[i].robots);
         free(arena.army_vector[i].chapter);
@@ -76,220 +109,42 @@ void RemoveExercito(char *name, int n)
 void Sistema(Maquina *robo)
 {
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
-    int in_river = 0;
-
+    int in_swamp = 0;
+    pos temp = numbToPos(aux.n, robo->pos);
     if (tmp.ac == 0) {
-        if (arena.Board[robo->pos.x][robo->pos.y - 1].terrain == 2) in_river = 1;
-        if (aux.n == 0) {
-            if (arena.Board[robo->pos.x][robo->pos.y - 1].robo == NULL) {
-                robo->pos.x = robo->pos.x;
-                robo->pos.y = robo->pos.y - 1;
-                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
-                    if (robo->n_crystalls > 0)
-                        robo->n_crystalls--;
-                }
+        if (arena.Board[robo->pos.x][robo->pos.y].terrain == 2) in_swamp = 1; //sair do pantano para uma estrada custa 1
+        if (arena.Board[temp.x][temp].robo == NULL) {
+            robo->pos.x = temp.x;
+            robo->pos.y = temp.y;
+            if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_swamp){
+                if (robo->n_crystalls > 0)
+                    robo->n_crystalls--;
             }
-        }
-        else if (aux.n == 1) {
-            if (arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo == NULL) {
-                robo->pos.x = robo->pos.x + 1;
-                robo->pos.y = robo->pos.y - 1;
-                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
-                    if (robo->n_crystalls > 0)
-                        robo->n_crystalls--;
-                }
-            }
-        }
-        else if (aux.n == 2) {
-            if (arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo == NULL) {
-                robo->pos.x = robo->pos.x + 1;
-                robo->pos.y = robo->pos.y + 1;
-                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
-                    if (robo->n_crystalls > 0)
-                        robo->n_crystalls--;
-                }
-            }
-        }
-        else if (aux.n == 3) {
-            if (arena.Board[robo->pos.x][robo->pos.y + 1].robo == NULL) {
-                robo->pos.x = robo->pos.x + 1;
-                robo->pos.y = robo->pos.y + 1;
-                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
-                    if (robo->n_crystalls > 0)
-                        robo->n_crystalls--;
-                }
-            }
-        }
-        else if (aux.n == 4) {
-            if (arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo == NULL) {
-                robo->pos.x = robo->pos.x - 1;
-                robo->pos.y = robo->pos.y + 1;
-                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
-                    if (robo->n_crystalls > 0)
-                        robo->n_crystalls--;
-                }
-            }
-        }
-        else if (aux.n == 5) {
-            if (arena.Board[robo->pos.x - 1][robo->pos.y].robo == NULL ) {
-                robo->pos.x = robo->pos.x - 1;
-                robo->pos.y = robo->pos.y;
-                if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_river){
-                    if (robo->n_crystalls > 0)
-                        robo->n_crystalls--;
-                }
-            }
-        }
         arena.Board[robo->pos.x][robo->pos.y].robo = robo;
+        }
     }
     else if (tmp.ac == 10) {
-        if (aux.n == 0) {
-            if (arena.Board[robo->pos.x][robo->pos.y - 1].crystall > 0) {
-                arena.Board[robo->pos.x][robo->pos.y - 1].crystall--;
-                &robo.n_crystalls++;
-            }
-        }
-        else if (aux.n == 1) {
-            if (arena.Board[robo->pos.x + 1][robo->pos.y - 1].crystall > 0) {
-                arena.Board[robo->pos.x + 1][robo->pos.y - 1].crystall--;
-                &robo.n_crystalls++;
-            }
-        }
-        else if (aux.n == 2) {
-            if (arena.Board[robo->pos.x + 1][robo->pos.y + 1].crystall > 0) {
-                arena.Board[robo->pos.x + 1][robo->pos.y + 1].crystall--;
-                &robo.n_crystalls++;
-            }
-        }
-        else if (aux.n == 3) {
-            if (arena.Board[robo->pos.x][robo->pos.y + 1].crystall > 0) {
-                arena.Board[robo->pos.x][robo->pos.y + 1].crystall--;
-                &robo.n_crystalls++;
-            }
-        }
-        else if (aux.n == 4) {
-            if (arena.Board[robo->pos.x - 1][robo->pos.y + 1].crystall > 0) {
-                arena.Board[robo->pos.x - 1][robo->pos.y + 1].crystall--;
-                &robo.n_crystalls++;
-            }
-        }
-        else if (aux.n == 5) {
-            if (arena.Board[robo->pos.x - 1][robo->pos.y].crystall > 0) {
-                arena.Board[robo->pos.x - 1][robo->pos.y].crystall--;
-                &robo.n_crystalls++;
-            }
+        if (arena.Board[temp.x][temp.y].crystall > 0) {
+            arena.Board[temp.x][temp.y].crystall--;
+            &robo.n_crystalls++;
         }
     }
     else if (tmp.ac == 20) {
-        if (aux.n == 0) {
-            arena.Board[robo->pos.x][robo->pos.y - 1].crystall++;
-        }
-        else if (aux.n == 1) {
-            arena.Board[robo->pos.x + 1][robo->pos.y - 1].crystall++;
-        }
-        else if (aux.n == 2) {
-            arena.Board[robo->pos.x + 1][robo->pos.y + 1].crystall++;
-        }
-        else if (aux.n == 3) {
-            arena.Board[robo->pos.x][robo->pos.y + 1].crystall++;
-        }
-        else if (aux.n == 4) {
-            arena.Board[robo->pos.x - 1][robo->pos.y + 1].crystall++;
-        }
-        else if (aux.n == 5) {
-            arena.Board[robo->pos.x - 1][robo->pos.y].crystall++;
-        }
+        arena.Board[temp.x][temp.y].crystall++;
         &robo.n_crystalls--;
     }
     else if (tmp.ac == 30) {
-        if (aux.n == 0) {
-            if (arena.Board[robo->pos.x][robo->pos.y - 1].robo != NULL) {
-                if (arena.Board[robo->pos.x][robo->pos.y - 1].robo->n_crystalls > 0) {
-                    robo->n_crystalls += arena.Board[robo->pos.x][robo->pos.y - 1].robo->n_crystalls;
-                    arena.Board[robo->pos.x][robo->pos.y - 1].robo->n_crystalls = 0;
-                }
-                else {
-                    arena.Board[robo->pos.x][robo->pos.y - 1].robo = NULL;
-                    //não sei o que esta certo.
-                    arena.Board[robo->pos.x][robo->pos.y - 1].roboID = 0;
-                    free(arena.Board[robo->pos.x][robo->pos.y - 1].robo);
-                    &arena.Board[robo->pos.x][robo->pos.y - 1].robo = NULL;
-                }
+        if (arena.Board[temp.x][temp.y].robo != NULL) {
+            if (arena.Board[temp.x][temp.y].robo->n_crystalls > 0) {
+                robo->n_crystalls += arena.Board[temp.x][temp.y].robo->n_crystalls;
+                arena.Board[temp.x][temp.y].robo->n_crystalls = 0;
             }
-        }
-        else if (aux.n == 1) {
-            if (arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo != NULL) {
-                if (arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo->n_crystalls > 0) {
-                    robo->n_crystalls += arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo->n_crystalls;
-                    arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo->n_crystalls = 0;
-                }
-                else {
-                    arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo = NULL;
-                    //não sei o que esta certo.
-                    arena.Board[robo->pos.x + 1][robo->pos.y - 1].roboID = 0;
-                    free(arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo);
-                    &arena.Board[robo->pos.x + 1][robo->pos.y - 1].robo = NULL;
-                }
-            }
-        }
-        else if (aux.n == 2) {
-            if (arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo != NULL) {
-                if (arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo->n_crystalls > 0) {
-                    robo->n_crystalls += arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo->n_crystalls;
-                    arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo->n_crystalls = 0;
-                }
-                else {
-                    arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo = NULL;
-                    //não sei o que esta certo.
-                    arena.Board[robo->pos.x + 1][robo->pos.y + 1].roboID = 0;
-                    free(arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo);
-                    &arena.Board[robo->pos.x + 1][robo->pos.y + 1].robo = NULL;
-                }
-            }
-        }
-        else if (aux.n == 3) {
-            if (arena.Board[robo->pos.x][robo->pos.y + 1].robo != NULL) {
-                if (arena.Board[robo->pos.x][robo->pos.y + 1].robo->n_crystalls > 0) {
-                    robo->n_crystalls += arena.Board[robo->pos.x][robo->pos.y + 1].robo->n_crystalls;
-                    arena.Board[robo->pos.x][robo->pos.y + 1].robo->n_crystalls = 0;
-                }
-                else {
-                    arena.Board[robo->pos.x][robo->pos.y + 1].robo = NULL;
-                    //não sei o que esta certo.
-                    arena.Board[robo->pos.x][robo->pos.y + 1].roboID = 0;
-                    free(arena.Board[robo->pos.x][robo->pos.y + 1].robo);
-                    &arena.Board[robo->pos.x][robo->pos.y + 1].robo = NULL;
-                }
-            }
-        }
-        else if (aux.n == 4) {
-            if (arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo != NULL) {
-                if (arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo->n_crystalls > 0) {
-                    robo->n_crystalls += arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo->n_crystalls;
-                    arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo->n_crystalls = 0;
-                }
-                else {
-                    arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo = NULL;
-                    //não sei o que esta certo.
-                    arena.Board[robo->pos.x - 1][robo->pos.y + 1].roboID = 0;
-                    free(arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo);
-                    &arena.Board[robo->pos.x - 1][robo->pos.y + 1].robo = NULL;
-                }
-            }
-        }
-        else if (aux.n == 5) {
-            if (arena.Board[robo->pos.x + 1][robo->pos.y].robo != NULL) {
-                if (arena.Board[robo->pos.x + 1][robo->pos.y].robo->n_crystalls > 0) {
-                    robo->n_crystalls += arena.Board[robo->pos.x + 1][robo->pos.y].robo->n_crystalls;
-                    arena.Board[robo->pos.x + 1][robo->pos.y].robo->n_crystalls = 0;
-                }
-                else {
-                    arena.Board[robo->pos.x + 1][robo->pos.y].robo = NULL;
-                    //não sei o que esta certo.
-                    arena.Board[robo->pos.x + 1][robo->pos.y].roboID = 0;
-                    free(arena.Board[robo->pos.x + 1][robo->pos.y].robo);
-                    &arena.Board[robo->pos.x + 1][robo->pos.y].robo = NULL;
-                }
+            else {
+                arena.Board[temp.x][temp.y].robo = NULL;
+                //não sei o que esta certo.
+                arena.Board[temp.x][temp.y].roboID = 0;
+                free(arena.Board[temp.x][temp.y].robo);
+                &arena.Board[temp.x][temp.y].robo = NULL;
             }
         }
     }

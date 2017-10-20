@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "arena.h"
 #include "maq.h"
 
 /* #define DEBUG */
@@ -304,25 +305,24 @@ void exec_maquina(Maquina *m, int n) {
         exec->topo -= arg.n;
         break;
     case ATR:
-    	OPERANDO x = desempilha(pil); // mudar para ser um num 0-5 que vai ser a pos
+    	OPERANDO x = desempilha(pil);
     	OPERANDO y;
-    	y.t = NUM;
+        pos z;
+        z = numbToPos(x.n, m->pos);
+        y.t = NUM;
         if (arg == 0) {
-    		y.n = x.cel.terrain;
-    		empilha(pil, y);
+            y.n = arena.Board[z.x][z.y].terrain;
     	}
     	else if (arg == 1) {
-    		y.n = x.cel.crystall;
-    		empilha(pil, y);
+            y.n = arena.Board[z.x][z.y].crystall;
     	}
     	else if (arg == 2) {
-    		y.n = x.cel.roboID;
-    		empilha(pil, y);
+            y.n = arena.Board[z.x][z.y].roboID;
     	}
     	else {
-    		y.n = x.cel.HQ;
-    		empilha(pil, y);
+            y.n = arena.Board[z.x][z.y].HQ;
     	}
+        empilha(pil, y);
     	break;
     case MOV:
         tmp.t = NUM;
