@@ -21,7 +21,7 @@ typedef node **board;
 
 typedef struct {
     board Board;
-    int army_number;
+    int army_number, top;
     army *army_vector;
     double time;
     int size; //Estamos considerando arena quadrada

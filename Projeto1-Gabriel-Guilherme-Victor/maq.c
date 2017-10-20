@@ -147,8 +147,8 @@ void exec_maquina(Maquina *m, int n) {
 		ip2.t = NUM;
 		ip2.n = ip;
 	  empilha(exec, ip2);
-    base.n = exec->topo;
-    empilha(bases, base);
+      base.n = exec->topo;
+      empilha(bases, base);
 	  ip = arg;
 	  continue;
 	case RET:
