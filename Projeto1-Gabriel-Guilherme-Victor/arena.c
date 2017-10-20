@@ -45,99 +45,101 @@ void Sistema(Maquina *robo)
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
     if (tmp.ac == 0) {
         if (aux.n == 0) {
-            if (arena.Board[][].robo == NULL) {
-                &robo.pos.x = ;
-                &robo.pos.y = ;
+            if (arena.Board[&robo.pos.x][&robo.pos.y - 1].robo == NULL) {
+                &robo.pos.x = &robo.pos.x;
+                &robo.pos.y = &robo.pos.y - 1;
             }
         }
         else if (aux.n == 1) {
-            if (arena.Board[][].robo == NULL) {
-                &robo.pos.x = ;
-                &robo.pos.y = ;
+            if (arena.Board[&robo.pos.x + 1][&robo.pos.y - 1].robo == NULL) {
+                &robo.pos.x = &robo.pos.x + 1;
+                &robo.pos.y = &robo.pos.y - 1;
             }
         }
         else if (aux.n == 2) {
-            if (arena.Board[][].robo == NULL) {
-                &robo.pos.x = ;
-                &robo.pos.y = ;
+            if (arena.Board[&robo.pos.x + 1][&robo.pos.y + 1].robo == NULL) {
+                &robo.pos.x = &robo.pos.x + 1;
+                &robo.pos.y = &robo.pos.y + 1;
             }
         }
         else if (aux.n == 3) {
-            if (arena.Board[][].robo == NULL) {
-                &robo.pos.x = ;
-                &robo.pos.y = ;
+            if (arena.Board[&robo.pos.x][&robo.pos.y + 1].robo == NULL) {
+                &robo.pos.x = &robo.pos.x + 1;
+                &robo.pos.y = &robo.pos.y + 1;
             }
         }
         else if (aux.n == 4) {
-            if (arena.Board[][].robo == NULL) {
-                &robo.pos.x = ;
-                &robo.pos.y = ;
+            if (arena.Board[&robo.pos.x - 1][&robo.pos.y + 1].robo == NULL) {
+                &robo.pos.x = &robo.pos.x - 1;
+                &robo.pos.y = &robo.pos.y + 1;
             }
         }
         else if (aux.n == 5) {
-            if (arena.Board[][].robo == NULL) {
-                &robo.pos.x = ;
-                &robo.pos.y = ;
+            if (arena.Board[&robo.pos.x - 1][&robo.pos.y].robo == NULL) {
+                &robo.pos.x = &robo.pos.x - 1;
+                &robo.pos.y = &robo.pos.y;
             }
         }
+        arena.Board[&robo.pos.x][&robo.pos.y].robo = robo;
     }
     else if (tmp.ac == 10) {
         if (aux.n == 0) {
-            if (arena.Board[][].crystall > 0) {
-                arena.Board[][].crystall--;
+            if (arena.Board[&robo.pos.x][&robo.pos.y - 1].crystall > 0) {
+                arena.Board[&robo.pos.x][&robo.pos.y - 1].crystall--;
                 &robo.n_crystalls++;
             }
         }
         else if (aux.n == 1) {
-            if (arena.Board[][].crystall > 0) {
-                arena.Board[][].crystall--;
+            if (arena.Board[&robo.pos.x + 1][&robo.pos.y - 1].crystall > 0) {
+                arena.Board[&robo.pos.x + 1][&robo.pos.y - 1].crystall--;
                 &robo.n_crystalls++;
             }
         }
         else if (aux.n == 2) {
-            if (arena.Board[][].crystall > 0) {
-                arena.Board[][].crystall--;
+            if (arena.Board[&robo.pos.x + 1][&robo.pos.y + 1].crystall > 0) {
+                arena.Board[&robo.pos.x + 1][&robo.pos.y + 1].crystall--;
                 &robo.n_crystalls++;
             }
         }
         else if (aux.n == 3) {
-            if (arena.Board[][].crystall > 0) {
-                arena.Board[][].crystall--;
+            if (arena.Board[&robo.pos.x][&robo.pos.y + 1].crystall > 0) {
+                arena.Board[&robo.pos.x][&robo.pos.y + 1].crystall--;
                 &robo.n_crystalls++;
             }
         }
         else if (aux.n == 4) {
-            if (arena.Board[][].crystall > 0) {
-                arena.Board[][].crystall--;
+            if (arena.Board[&robo.pos.x - 1][&robo.pos.y + 1].crystall > 0) {
+                arena.Board[&robo.pos.x - 1][&robo.pos.y + 1].crystall--;
                 &robo.n_crystalls++;
             }
         }
         else if (aux.n == 5) {
-            if (arena.Board[][].crystall > 0) {
-                arena.Board[][].crystall--;
+            if (arena.Board[&robo.pos.x - 1][&robo.pos.y].crystall > 0) {
+                arena.Board[&robo.pos.x - 1][&robo.pos.y].crystall--;
                 &robo.n_crystalls++;
             }
         }
     }
     else if (tmp.ac == 20) {
         if (aux.n == 0) {
-
+            arena.Board[&robo.pos.x][&robo.pos.y - 1].crystall++;
         }
         else if (aux.n == 1) {
-
+            arena.Board[&robo.pos.x + 1][&robo.pos.y - 1].crystall++;
         }
         else if (aux.n == 2) {
-
+            arena.Board[&robo.pos.x + 1][&robo.pos.y + 1].crystall++;
         }
         else if (aux.n == 3) {
-
+            arena.Board[&robo.pos.x][&robo.pos.y + 1].crystall++;
         }
         else if (aux.n == 4) {
-
+            arena.Board[&robo.pos.x - 1][&robo.pos.y + 1].crystall++;
         }
         else if (aux.n == 5) {
-
+            arena.Board[&robo.pos.x - 1][&robo.pos.y].crystall++;
         }
+        &robo.n_crystalls--;
     }
     else if (tmp.ac == 30) {
         if (aux.n == 0) {

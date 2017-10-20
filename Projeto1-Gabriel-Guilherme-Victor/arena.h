@@ -2,7 +2,6 @@
 
 typedef struct {
     int numb_robots;
-    pos *robots;
     Maquina **robo;
     char *chapter;
 } army;
@@ -30,4 +29,4 @@ void InsereExercito(char *name, int n);
 
 void RemoveExercito(char *name, int n);
 
-void Sistema(Maquina *robo, int opcode);
+void Sistema(Maquina *robo);
