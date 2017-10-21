@@ -1,6 +1,10 @@
-motor: maq.o pilha.o motor.o
+CC = gcc
 
-mdc: maq.o pilha.o mdc.o
+all : maq.o arena.o pilha.o
 
-clean:
-	rm -f motor fact mdc *.o
+maq.o :	maq.c
+	$(CC) $? -c
+arena.o : arena.c
+	$(CC) $? -c
+pilha.o : pilha.c
+	$(CC) $? -c

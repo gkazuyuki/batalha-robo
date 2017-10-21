@@ -1,8 +1,11 @@
 #ifndef __ARENA_H__
 #define __ARENA_H__
 
-#include "maq.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "maq.h"
 
 typedef struct {
     int num_bots;
@@ -29,12 +32,18 @@ typedef struct {
 
 #define NUM_OF_BOTS 5
 
+Arena arena;
+
+pos numbToPos(int n, pos x);
+
 void Atualiza();
 
-void InsereExercito(char *name, int n);
+void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army_tag);
 
 void RemoveExercito(char *name, int n);
 
 void Sistema(Maquina *robo);
+
+void *emalloc(size_t size);
 
 #endif

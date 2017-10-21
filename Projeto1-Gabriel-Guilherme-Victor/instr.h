@@ -1,8 +1,6 @@
 #ifndef __INSTR_H__
 #define __INSTR_H__
 
-#include "arena.h"
-
 /* Códigos das instruções */
 typedef enum {
   PUSH,
@@ -35,7 +33,7 @@ typedef enum {
   MOV,
   FETCH,
   DEPO,
-  ATK 
+  ATK
 } OpCode;
 
 /* Tipos dos operandos */
@@ -43,7 +41,6 @@ typedef enum {
   NUM,
   ACAO,
   VAR,
-  CEL,
 } Tipo;
 
 /* Operando */
@@ -53,7 +50,6 @@ typedef struct {
  	  int n;
  	  int ac;
  	  int v;
-    node cel;
   };
 } OPERANDO;
 
