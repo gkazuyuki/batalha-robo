@@ -1,4 +1,5 @@
 #include "arena.h"
+#include <stdio.h>
 
 pos numbToPos(int n, pos x)
 {
@@ -33,7 +34,7 @@ pos numbToPos(int n, pos x)
 
 Arena *InicializaArena(int size, int army_number)
 {
-    Arena *new_arena;
+    Arena *new_arena = emalloc(size*sizeof(Arena));
     new_arena->size = size;
     new_arena->army_number = army_number;
     new_arena->top = 0;
@@ -86,7 +87,9 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
     arena.army_vector[arena.top].HQpos.y = HQ.y;
     arena.army_vector[arena.top].chapter = malloc(strlen(name)*sizeof(char));
     strcpy(arena.army_vector[arena.top].chapter, name);
+    arena.army_vector[arena.top].robos = emalloc(n*sizeof(Maquina *));
     for (int i = 0; i < n; i++){
+        printf("Aqui %d\n", i);
          arena.army_vector[arena.top].robos[i] = cria_maquina(program[i]);
          arena.army_vector[arena.top].robos[i]->position.x = army_poss[i].x;
          arena.army_vector[arena.top].robos[i]->position.y = army_poss[i].y;
