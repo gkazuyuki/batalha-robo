@@ -14,7 +14,7 @@ typedef struct {
 
 typedef struct  {
     Maquina *robo;
-    int terrain, crystall, HQ, roboID;
+    int terrain, crystall, HQ, armyID;
     } node;
 
 typedef node **board;

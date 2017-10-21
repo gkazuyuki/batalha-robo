@@ -49,9 +49,9 @@ Arena *InicializaArena(int size, int army_number)
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
             board[i][j].crystall = rand()%3; // 0, 1 ou 2 cristais na posição
-            board[i][j].terrain = rand()%3; //Três tipos de terreno: estrada, montanha, pantano //tirar esse treco uniforme.
+            board[i][j].terrain = rand()%3; //Três tipos de terreno: estrada, pantano.
             board[i][j].HQ = 0; //Sem HQ
-            board[i][j].roboID = 0; //Inicializa em robos
+            board[i][j].armyID = 0; //Inicializa em robos
         }
     new_arena->Board = new_board;
 
@@ -64,25 +64,32 @@ void Atualiza()
 {
     for (int i = 0; i < arena.army_number; i++){
         /*Já cuida do fato de qur se um exercito foi removido ele não sera
-         *considerado por ter
+         *considerado por ter.
         */
         for (int j = 0; j < arena.army_vector[i].num_bots; j++){
+            /*Vê se o robo ainda não foi destruido.
+             */
             if (arena.army_vector[i].robo[j])
                 exec_maquina(arena.army_vector[i].robo[j], 50);
         }
-    }
+    /*O tempo esta sendo contado por iteração da atualiza.
+     */
     new_arena->time += 1;
     return;
 }
 
-void InsereExercito(char *name, int n)
+void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army tag)
 {
     arena.army_vector[arena.top].num_bots = n;
-    arena.HQpos = ; // FALTA INICIALIZAR
+    arena.HQpos.x = HQ.x;
+    arena.HQpos.y = HQ.y;
     arena.army_vector[arena.top].chapter = malloc(strlen(name)*sizeof(char));
     strcpy(arena.army_vector[arena.top].chapter, name);
     for (int i = 0; i < n; i++){
-         arena.army_vector[arena.top].robo[i] = cria_maquina(); //isso tem algum argumento
+         arena.army_vector[arena.top].robo[i] = cria_maquina(program[i]);
+         arena.army_vector[arena.top].robo[i].position.x = army_poss[i].x;
+         arena.army_vector[arena.top].robo[i].position.y = army_poss[i].y;
+         arena.Board[army_poss[i].x][army_poss[i].y].armyID = ;
     }
     arena.top++;
     return;
@@ -93,8 +100,11 @@ void RemoveExercito(char *name, int n)
     for (int i = 0; i < arena.army_number && strcmp(name, arena.army_vector[i].chapter) != 0; i++) {}
     if (i < arena.army_number) {
         for (int j = 0; j < arena.army_vector[i].num_bots; j++) {
-            if (arena.army_vector[i].robo[j])
+            if (arena.army_vector[i].robo[j]){
+                arena.Board[arena.army_vector[i].robo[j].position.x][arena.army_vector[i].robo[j].position.y].robo = NULL;
+                arena.Board[arena.army_vector[i].robo[j].position.x][arena.army_vector[i].robo[j].position.y].armyID = 0;
                 destroi_maquina(arena.army_vector[i].robo[j]);
+            }
         }
         free(arena.army_vector[i].robots);
         free(arena.army_vector[i].chapter);
@@ -116,7 +126,7 @@ void Sistema(Maquina *robo)
         if (arena.Board[temp.x][temp].robo == NULL) {
             robo->pos.x = temp.x;
             robo->pos.y = temp.y;
-            if (arena.Board[robo->pos.x][robo->pos.y].terrain == 0 && in_swamp){
+            if (arena.Board[robo->pos.x][robo->pos.y].terrain != 2 && in_swamp){
                 if (robo->n_crystalls > 0)
                     robo->n_crystalls--;
             }
@@ -142,7 +152,7 @@ void Sistema(Maquina *robo)
             else {
                 arena.Board[temp.x][temp.y].robo = NULL;
                 //não sei o que esta certo.
-                arena.Board[temp.x][temp.y].roboID = 0;
+                arena.Board[temp.x][temp.y].armyID = 0;
                 free(arena.Board[temp.x][temp.y].robo);
                 &arena.Board[temp.x][temp.y].robo = NULL;
             }

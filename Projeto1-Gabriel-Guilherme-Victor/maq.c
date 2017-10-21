@@ -317,7 +317,7 @@ void exec_maquina(Maquina *m, int n) {
             y.n = arena.Board[z.x][z.y].crystall;
     	}
     	else if (arg == 2) {
-            y.n = arena.Board[z.x][z.y].roboID;
+            y.n = arena.Board[z.x][z.y].armyID;
     	}
     	else {
             y.n = arena.Board[z.x][z.y].HQ;
