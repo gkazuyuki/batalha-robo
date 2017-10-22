@@ -23,7 +23,7 @@ typedef struct {
 typedef struct  {
     Maquina *robo;
     int terrain, crystall, HQ, armyID;
-    } node;
+} node;
 
 typedef node **board;
 
@@ -33,7 +33,7 @@ typedef struct {
     army *army_vector;
     int time;
     int size; //Estamos considerando arena quadrada
-    } Arena;
+} Arena;
 
 Arena arena;
 
@@ -42,6 +42,8 @@ pos numbToPos(int n, pos x);
 void Atualiza();
 
 Arena *InicializaArena(int size, int army_number);
+
+void destroyArena(int n);
 
 void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army_tag);
 

@@ -12,18 +12,18 @@
 
 typedef struct {
     int x, y;
-    } pos;
+} pos;
 
 typedef struct {
-  Pilha pil;
-  Pilha exec;
-  Pilha bases;
-  OPERANDO Mem[MAXMEM];
-  INSTR *prog;
-  OPERANDO base;
-  int ip;
-  pos position;
-  int n_crystalls;
+    Pilha pil;
+    Pilha exec;
+    Pilha bases;
+    OPERANDO Mem[MAXMEM];
+    INSTR *prog;
+    OPERANDO base;
+    int ip;
+    pos position;
+    int n_crystalls;
 } Maquina;
 
 Maquina *cria_maquina(INSTR *p);

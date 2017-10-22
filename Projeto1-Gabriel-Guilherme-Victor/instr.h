@@ -8,58 +8,58 @@
 
 /* Códigos das instruções */
 typedef enum {
-  PUSH,
-  POP,
-  DUP,
-  ADD,
-  SUB,
-  MUL,
-  DIV,
-  JMP,
-  JIT,
-  JIF,
-  CALL,
-  RET,
-  EQ,
-  GT,
-  GE,
-  LT,
-  LE,
-  NE,
-  STO,
-  RCL,
-  END,
-  PRN,
-  STL,
-  RCE,
-  ALC,
-  FRE,
-  ATR,
-  MOV,
-  FETCH,
-  DEPO,
-  ATK
+    PUSH,
+    POP,
+    DUP,
+    ADD,
+    SUB,
+    MUL,
+    DIV,
+    JMP,
+    JIT,
+    JIF,
+    CALL,
+    RET,
+    EQ,
+    GT,
+    GE,
+    LT,
+    LE,
+    NE,
+    STO,
+    RCL,
+    END,
+    PRN,
+    STL,
+    RCE,
+    ALC,
+    FRE,
+    ATR,
+    MOV,
+    FETCH,
+    DEPO,
+    ATK
 } OpCode;
 
 /* Tipos dos operandos */
 typedef enum {
-  NUM,
-  ACAO,
+    NUM,
+    ACAO,
 } Tipo;
 
 /* Operando */
 typedef struct {
-  Tipo t;
-  union {
- 	  int n;
- 	  int ac;
-  };
+    Tipo t;
+    union {
+        int n;
+        int ac;
+    };
 } OPERANDO;
 
 /* Instrução */
 typedef struct {
-  OpCode instr;
-  int op;
+    OpCode instr;
+    int op;
 } INSTR;
 
 #endif

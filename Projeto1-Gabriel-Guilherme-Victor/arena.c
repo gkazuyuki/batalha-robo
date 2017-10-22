@@ -65,6 +65,14 @@ Arena *InicializaArena(int size, int army_number)
     return new_arena;
 }
 
+void destroyArena(int n)
+{
+    for (int i = 0; i < n; i++)
+        free(arena.Board[i]);
+    free(arena.Board);
+    return;    
+}
+
 void Atualiza()
 {
     for (int i = 0; i < arena.army_number; i++){
@@ -89,8 +97,8 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
     arena.army_vector[arena.top].num_bots = n;
     arena.army_vector[arena.top].HQpos.x = HQ.x;
     arena.army_vector[arena.top].HQpos.y = HQ.y;
-    arena.army_vector[arena.top].chapter = malloc(strlen(name)*sizeof(char));
-    strcpy(arena.army_vector[arena.top].chapter, name);
+    arena.army_vector[arena.top].chapter = emalloc(1 + (strlen(name))*sizeof(char));
+    arena.army_vector[arena.top].chapter = strcpy(arena.army_vector[arena.top].chapter, name);
     arena.army_vector[arena.top].robos = emalloc(n*sizeof(Maquina *));
     for (int i = 0; i < n; i++){
          arena.army_vector[arena.top].robos[i] = cria_maquina(program[i]);
@@ -116,7 +124,6 @@ void RemoveExercito(char *name)
             }
         }
         free(arena.army_vector[i].robos);
-        free(arena.army_vector[i].chapter);
         arena.army_vector[i].num_bots = -1;
 
     }
