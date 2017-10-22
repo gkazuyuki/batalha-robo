@@ -89,7 +89,6 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
     strcpy(arena.army_vector[arena.top].chapter, name);
     arena.army_vector[arena.top].robos = emalloc(n*sizeof(Maquina *));
     for (int i = 0; i < n; i++){
-        printf("Aqui %d\n", i);
          arena.army_vector[arena.top].robos[i] = cria_maquina(program[i]);
          arena.army_vector[arena.top].robos[i]->position.x = army_poss[i].x;
          arena.army_vector[arena.top].robos[i]->position.y = army_poss[i].y;
@@ -99,7 +98,7 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
     return;
 }
 
-void RemoveExercito(char *name, int n)
+void RemoveExercito(char *name)
 {
     int i;
     for (i = 0; i < arena.army_number && strcmp(name, arena.army_vector[i].chapter) != 0; i++) {}

@@ -42,7 +42,7 @@ Arena *InicializaArena(int size, int army_number);
 
 void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army_tag);
 
-void RemoveExercito(char *name, int n);
+void RemoveExercito(char *name);
 
 void Sistema(Maquina *robo);
 

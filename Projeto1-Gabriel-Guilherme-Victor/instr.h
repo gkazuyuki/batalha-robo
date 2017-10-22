@@ -56,7 +56,7 @@ typedef struct {
 /* Instrução */
 typedef struct {
   OpCode instr;
-  OPERANDO op;
+  int op;
 } INSTR;
 
 #endif

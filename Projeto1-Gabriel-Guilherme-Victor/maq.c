@@ -80,29 +80,37 @@ void exec_maquina(Maquina *m, int n) {
 
   for (i = 0; i < n; i++) {
 	OpCode   opc = prg[ip].instr;
-	OPERANDO arg = prg[ip].op;
+    OPERANDO arg;
+    if (opc == ATR || opc == MOV ||opc == FETCH || opc == DEPO || opc == ATK){
+        arg.t = ACAO;
+        arg.ac = prg[ip].op;
+    }
+    else {
+        arg.t = NUM;
+        arg.n = prg[ip].op;
+    }
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
 
 	switch (opc) {
-	  OPERANDO tmp;
+        OPERANDO tmp;
 	case PUSH: ;
-	  empilha(pil, arg);
-	  break;
+        empilha(pil, arg);
+        break;
 	case POP: ;
-	  desempilha(pil);
-	  break;
+        desempilha(pil);
+        break;
 	case DUP: ;
-	  tmp = desempilha(pil);
-	  empilha(pil, tmp);
-	  empilha(pil, tmp);
-	  break;
+        tmp = desempilha(pil);
+        empilha(pil, tmp);
+        empilha(pil, tmp);
+        break;
 	case ADD: ;
 		x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
 		tmp.n = x.n + y.n;
 		tmp.t = NUM;
-	  empilha(pil, tmp);
-	  break;
+        empilha(pil, tmp);
+        break;
 	case SUB: ;
 	   x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
        tmp.n = y.n - x.n;
@@ -110,26 +118,26 @@ void exec_maquina(Maquina *m, int n) {
 	   empilha(pil, tmp);
 	   break;
 	case MUL: ;
-	  x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+        x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
 		tmp.n = x.n * y.n;
 		tmp.t = NUM;
-	  empilha(pil, tmp);
-	  break;
+        empilha(pil, tmp);
+        break;
 	case DIV: ;
-	  x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+        x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
 		tmp.n = y.n / x.n;
 		tmp.t = NUM;
-	  empilha(pil, tmp);
-	  break;
+        empilha(pil, tmp);
+        break;
 	case JMP: ;
-	  ip = arg.n;
-	  continue;
+        ip = arg.n;
+        continue;
 	case JIT:
-	  if (desempilha(pil).n != 0) {
-		ip = arg.n;
-		continue;
-	  }
-	  break;
+        if (desempilha(pil).n != 0) {
+            ip = arg.n;
+            continue;
+        }
+        break;
 	case JIF:
 	  if (desempilha(pil).n == 0) {
 		ip = arg.n;
