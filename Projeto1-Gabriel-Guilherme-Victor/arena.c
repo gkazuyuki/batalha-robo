@@ -50,13 +50,13 @@ Arena *InicializaArena(int size, int army_number)
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
             new_board[i][j].crystall = rand()%3; // 0, 1 ou 2 cristais na posição
-            new_board[i][j].terrain = rand()%3; //Três tipos de terreno: estrada, pantano.
+            new_board[i][j].terrain = rand()%3; //Dois tipos de terreno: estrada, pantano.
             new_board[i][j].HQ = 0; //Sem HQ
             new_board[i][j].armyID = 0; //Inicializa em robos
         }
     new_arena->Board = new_board;
 
-    new_arena->army_vector = emalloc(army_number*sizeof(army)); //IDEIA FAZER ISSO ESTATICAMENTE COM UM TOPO
+    new_arena->army_vector = emalloc(army_number*sizeof(army));
 
     return new_arena;
 }
@@ -65,12 +65,12 @@ void Atualiza()
 {
     for (int i = 0; i < arena.army_number; i++){
         /*Já cuida do fato de qur se um exercito foi removido ele não sera
-         *considerado por ter.
+         *considerado por ter num_bots = -1.
         */
         for (int j = 0; j < arena.army_vector[i].num_bots; j++){
             /*Vê se o robo ainda não foi destruido.
              */
-            if (arena.army_vector[i].robos[j])
+            if (arena.Board[arena.army_vector[i].robos[j]->position.x][arena.army_vector[i].robos[j]->position.y].robo)
                 exec_maquina(arena.army_vector[i].robos[j], 50);
         }
     }
@@ -93,6 +93,7 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
          arena.army_vector[arena.top].robos[i]->position.x = army_poss[i].x;
          arena.army_vector[arena.top].robos[i]->position.y = army_poss[i].y;
          arena.Board[army_poss[i].x][army_poss[i].y].armyID = army_tag;
+         arena.Board[army_poss[i].x][army_poss[i].y].robo = arena.army_vector[arena.top].robos[i];
     }
     arena.top++;
     return;
@@ -144,8 +145,10 @@ void Sistema(Maquina *robo)
         }
     }
     else if (tmp.ac == 20) {
-        arena.Board[temp.x][temp.y].crystall++;
-        robo->n_crystalls--;
+        if (robo->n_crystalls > 0){
+            arena.Board[temp.x][temp.y].crystall += robo->n_crystalls;
+            robo->n_crystalls = 0;
+        }
     }
     else if (tmp.ac == 30) {
         if (arena.Board[temp.x][temp.y].robo != NULL) {
@@ -154,11 +157,8 @@ void Sistema(Maquina *robo)
                 arena.Board[temp.x][temp.y].robo->n_crystalls = 0;
             }
             else {
-                //não sei o que esta certo.
                 arena.Board[temp.x][temp.y].armyID = 0;
-                free(arena.Board[temp.x][temp.y].robo);
                 arena.Board[temp.x][temp.y].robo = NULL;
-                //&(arena.Board[temp.x][temp.y].robo) = NULL;
             }
         }
     }
