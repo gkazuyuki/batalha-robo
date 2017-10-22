@@ -1,3 +1,8 @@
+// Guilherme Costa Vieira               Nº USP: 9790930
+// Gabriel Kazuyuki Isomura             Nº USP: 9793673
+// Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "arena.h"
@@ -164,21 +169,17 @@ void exec_maquina(Maquina *m, int n) {
 	  tmp.t = NUM;
 	  tmp.n = 0;
 	  if (x.t == y.t) {
-	  	if (x.t == NUM) {
-	  		if (x.n == y.n)
-	  			tmp.n = 1;
-	    }
-	    else if (x.t == ACAO) {
-	  	  if (x.ac == y.ac)
-	  	  	tmp.n = 1;
-	  	}
-		  else if (x.t == VAR) {
-		  	if (x.v == y.v)
-		  		tmp.n = 1;
-		  }
-		}
-		empilha(pil, tmp);
-	  break;
+          if (x.t == NUM) {
+              if (x.n == y.n)
+              tmp.n = 1;
+          }
+          else if (x.t == ACAO) {
+              if (x.ac == y.ac)
+                tmp.n = 1;
+            }
+	   }
+       empilha(pil, tmp);
+       break;
 	case GT: ;
         x = desempilha(pil), y = desempilha(pil);
         tmp.t = NUM;
@@ -190,10 +191,6 @@ void exec_maquina(Maquina *m, int n) {
             }
 	        else if (x.t == ACAO) {
                 if (x.ac >= y.ac)
-                    tmp.n = 1;
-            }
-            else if (x.t == VAR) {
-                if (x.v >= y.v)
                     tmp.n = 1;
             }
         }
@@ -212,10 +209,6 @@ void exec_maquina(Maquina *m, int n) {
 	  	  if (x.ac >= y.ac)
 	  	  	tmp.n = 1;
 	  	}
-		  else if (x.t == VAR) {
-		  	if (x.v >= y.v)
-		  		tmp.n = 1;
-		  }
 		}
 		empilha(pil, tmp);
 	  break;
@@ -232,10 +225,6 @@ void exec_maquina(Maquina *m, int n) {
 	  	  if (x.ac < y.ac)
 	  	  	tmp.n = 1;
 	  	}
-		  else if (x.t == VAR) {
-		  	if (x.v < y.v)
-		  		tmp.n = 1;
-		  }
 		}
 		empilha(pil, tmp);
 	  break;
@@ -251,10 +240,6 @@ void exec_maquina(Maquina *m, int n) {
             else if (x.t == ACAO) {
                 if (x.ac <= y.ac)
                     tmp.n = 1;
-            }
-            else if (x.t == VAR) {
-                if (x.v <= y.v)
-                tmp.n = 1;
             }
         }
         empilha(pil, tmp);
@@ -273,10 +258,6 @@ void exec_maquina(Maquina *m, int n) {
             if (x.ac != y.ac)
                 tmp.n = 1;
         }
-        else if (x.t == VAR) {
-		  	if (x.v != y.v)
-		  		tmp.n = 1;
-		}
         empilha(pil, tmp);
         break;
 	case STO: ;
@@ -291,7 +272,6 @@ void exec_maquina(Maquina *m, int n) {
         x = desempilha(pil);
         if (x.t == NUM) printf("%d\n", x.n);
         else if (x.t == ACAO) printf ("%d\n", x.ac);
-        else if (x.t == VAR) printf ("%d\n", x.v);
         break;
     case STL: ;
         exec->val[base.n + arg.n] = desempilha(pil);

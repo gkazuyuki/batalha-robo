@@ -1,3 +1,8 @@
+// Guilherme Costa Vieira               Nº USP: 9790930
+// Gabriel Kazuyuki Isomura             Nº USP: 9793673
+// Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
+
+
 #ifndef __INSTR_H__
 #define __INSTR_H__
 
@@ -40,7 +45,6 @@ typedef enum {
 typedef enum {
   NUM,
   ACAO,
-  VAR,
 } Tipo;
 
 /* Operando */
@@ -49,7 +53,6 @@ typedef struct {
   union {
  	  int n;
  	  int ac;
- 	  int v;
   };
 } OPERANDO;
 

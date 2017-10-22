@@ -1,3 +1,6 @@
+// Guilherme Costa Vieira               Nº USP: 9790930
+// Gabriel Kazuyuki Isomura             Nº USP: 9793673
+// Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +36,7 @@ INSTR fat[] = {
 
 INSTR *army_prog[] = {fat, fat, fat};
 
-int main(int ac, char **av) {
+int main() {
     Arena *nova_arena;
     nova_arena = InicializaArena(50, 2);
     arena = *nova_arena;

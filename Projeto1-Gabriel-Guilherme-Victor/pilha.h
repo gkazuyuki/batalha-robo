@@ -1,3 +1,8 @@
+// Guilherme Costa Vieira               Nº USP: 9790930
+// Gabriel Kazuyuki Isomura             Nº USP: 9793673
+// Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
+
+
 #ifndef __PILHA_H__
 #define __PILHA_H__
 

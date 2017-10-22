@@ -1,3 +1,8 @@
+// Guilherme Costa Vieira               Nº USP: 9790930
+// Gabriel Kazuyuki Isomura             Nº USP: 9793673
+// Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
+
+
 #ifndef __ARENA_H__
 #define __ARENA_H__
 
@@ -26,11 +31,9 @@ typedef struct {
     board Board;
     int army_number, top;
     army *army_vector;
-    double time;
+    int time;
     int size; //Estamos considerando arena quadrada
     } Arena;
-
-#define NUM_OF_BOTS 5
 
 Arena arena;
 
