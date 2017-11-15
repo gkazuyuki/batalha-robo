@@ -83,7 +83,7 @@ void destroi_maquina(Maquina *m)
 #define base (m->base)
 #define bases (&m->bases)
 
-void exec_maquina(Maquina *m, int n)
+void exec_maquina(Maquina *m, int n, FILE *display)
 {
     int i;
     OPERANDO x, y;
@@ -314,7 +314,7 @@ void exec_maquina(Maquina *m, int n)
             tmp.t = ACAO;
             tmp.ac = 0;
             empilha(pil, tmp);
-            Sistema(m);
+            Sistema(m, display);
             break;
         case FETCH: ;
             tmp.t = NUM;
@@ -323,7 +323,7 @@ void exec_maquina(Maquina *m, int n)
             tmp.t = ACAO;
             tmp.ac = 10;
             empilha(pil, tmp);
-            Sistema(m);
+            Sistema(m, display);
             break;
         case DEPO: ;
             tmp.t = NUM;
@@ -332,7 +332,7 @@ void exec_maquina(Maquina *m, int n)
             tmp.t = ACAO;
             tmp.ac = 20;
             empilha(pil, tmp);
-            Sistema(m);
+            Sistema(m, display);
             break;
         case ATK: ;
             tmp.t = NUM;
@@ -341,7 +341,7 @@ void exec_maquina(Maquina *m, int n)
             tmp.t = ACAO;
             tmp.ac = 30;
             empilha(pil, tmp);
-            Sistema(m);
+            Sistema(m, display);
             break;
         }
         D(imprime(pil,5));

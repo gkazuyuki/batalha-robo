@@ -58,25 +58,27 @@ int main() {
     Arena *nova_arena;
     nova_arena = InicializaArena(50, 3);
     arena = *nova_arena;
+    FILE *display = popen("./apres", "w");
 
-    pos hq_pos1 = {10, 10};
-    pos army_pos1[] = {{15, 15}, {15, 14}, {14, 15}};
-    InsereExercito("Black_Templars", 3, hq_pos1, army_pos1, army_prog1, 1);
+    pos hq_pos1 = {1, 1};
+    pos army_pos1[] = {{1, 2}, {2, 2}, {2, 1}};
+    InsereExercito("Black_Templars", 3, hq_pos1, army_pos1, army_prog1, 1, display);
 
-    pos hq_pos2 = {20, 20};
-    pos army_pos2[] = {{25, 25}, {25, 24}, {26, 25}};
-    InsereExercito("Dark_Angels", 3, hq_pos2, army_pos2, army_prog2, 2);
+    pos hq_pos2 = {7, 14};
+    pos army_pos2[] = {{7, 13}, {6, 14}, {5, 14}};
+    InsereExercito("Dark_Angels", 3, hq_pos2, army_pos2, army_prog2, 2, display);
 
-    pos hq_pos3 = {30, 30};
-    pos army_pos3[] = {{15, 16}, {5, 4}, {6, 25}};
-    InsereExercito("Ultramarines", 3, hq_pos3, army_pos3, army_prog3, 3);
+    pos hq_pos3 = {14, 1};
+    pos army_pos3[] = {{13, 1}, {14, 2}, {13, 2}};
+    InsereExercito("Ultramarines", 3, hq_pos3, army_pos3, army_prog3, 3, display);
 
     while (arena.time < 5)
-        Atualiza();
+        Atualiza(display);
     RemoveExercito("Black_Templars");
     RemoveExercito("Dark_Angels");
     RemoveExercito("Ultramarines");
     destroyArena(arena.size);
+    pclose(display);
 
     return 0;
 }

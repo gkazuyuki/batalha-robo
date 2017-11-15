@@ -32,6 +32,7 @@ typedef struct {
     int army_number, top;
     army *army_vector;
     int time;
+    int next_id; // Próximo ID livre p/ registrar robô no controlador gráfico.
     int size; //Estamos considerando arena quadrada
 } Arena;
 
@@ -39,17 +40,17 @@ Arena arena;
 
 pos numbToPos(int n, pos x);
 
-void Atualiza();
+void Atualiza(FILE *display);
 
 Arena *InicializaArena(int size, int army_number);
 
 void destroyArena(int n);
 
-void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army_tag);
+void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army_tag, FILE *display);
 
 void RemoveExercito(char *name);
 
-void Sistema(Maquina *robo);
+void Sistema(Maquina *robo, FILE *display);
 
 void *emalloc(size_t size);
 

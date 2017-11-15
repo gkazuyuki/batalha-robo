@@ -22,6 +22,7 @@ typedef struct {
     INSTR *prog;
     OPERANDO base;
     int ip;
+    int id;
     pos position;
     int n_crystalls;
 } Maquina;
@@ -30,6 +31,6 @@ Maquina *cria_maquina(INSTR *p);
 
 void destroi_maquina(Maquina *m);
 
-void exec_maquina(Maquina *m, int n);
+void exec_maquina(Maquina *m, int n, FILE *display);
 
 #endif

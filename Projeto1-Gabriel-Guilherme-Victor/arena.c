@@ -2,8 +2,17 @@
 // Gabriel Kazuyuki Isomura             Nº USP: 9793673
 // Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
 
-
 #include "arena.h"
+
+// Recebe três strings e concatena.
+char* concat(const char *s1, const char *s2, const char *s3)
+{
+    char *result = emalloc(strlen(s1)+strlen(s2)+1); //+1 para o null-terminator
+    strcpy(result, s1);
+    strcat(result, s2);
+    strcat(result, s3);
+    return result;
+}
 
 pos numbToPos(int n, pos x)
 {
@@ -43,6 +52,7 @@ Arena *InicializaArena(int size, int army_number)
     new_arena->army_number = army_number;
     new_arena->top = 0;
     new_arena->time = 0; //FALTA O TEMPO AQUI
+    new_arena->next_id = 0; 
 
     board new_board = emalloc(size*sizeof(node*)); //Criando tabuleiro nxn
     for (int i = 0; i < size; i++) {
@@ -73,7 +83,7 @@ void destroyArena(int n)
     return;    
 }
 
-void Atualiza()
+void Atualiza(FILE *display)
 {
     for (int i = 0; i < arena.army_number; i++){
         /*Já cuida do fato de qur se um exercito foi removido ele não sera
@@ -83,7 +93,7 @@ void Atualiza()
             /*Vê se o robo ainda não foi destruido.
              */
             if (arena.Board[arena.army_vector[i].robos[j]->position.x][arena.army_vector[i].robos[j]->position.y].robo)
-                exec_maquina(arena.army_vector[i].robos[j], 50);
+                exec_maquina(arena.army_vector[i].robos[j], 50, display);
         }
     }
     /*O tempo esta sendo contado por iteração da atualiza.
@@ -92,7 +102,7 @@ void Atualiza()
     return;
 }
 
-void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army_tag)
+void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, int army_tag, FILE *display)
 {
     arena.army_vector[arena.top].num_bots = n;
     arena.army_vector[arena.top].HQpos.x = HQ.x;
@@ -104,6 +114,9 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
          arena.army_vector[arena.top].robos[i] = cria_maquina(program[i]);
          arena.army_vector[arena.top].robos[i]->position.x = army_poss[i].x;
          arena.army_vector[arena.top].robos[i]->position.y = army_poss[i].y;
+         arena.army_vector[arena.top].robos[i]->id = arena.next_id; // Identificação do robô no controlador gráfico.
+         arena.next_id++; // Atualiza ID do próximo robô a ser criado.
+         fprintf(display, "%s", concat("rob assets/", name, ".png\n")); // Registra robô no controlador gráfico.
          arena.Board[army_poss[i].x][army_poss[i].y].armyID = army_tag;
          arena.Board[army_poss[i].x][army_poss[i].y].robo = arena.army_vector[arena.top].robos[i];
     }
@@ -128,18 +141,23 @@ void RemoveExercito(char *name)
 
     }
     else {
-        fprintf(stderr, "ERRO: Execito não existe.\n");
+        fprintf(stderr, "ERRO: Exército não existe.\n");
     }
 }
 
-void Sistema(Maquina *robo)
+void Sistema(Maquina *robo, FILE *display)
 {
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
     int in_swamp = 0;
     pos temp = numbToPos(aux.n, robo->position);
+    
+    //Ação MOV
     if (tmp.ac == 0) {
         if (arena.Board[robo->position.x][robo->position.y].terrain == 2) in_swamp = 1; //sair do pantano para uma estrada custa 1
         if (arena.Board[temp.x][temp.y].robo == NULL) {
+            printf("FOI\n");
+            fprintf(display, "%d %d %d %d %d\n",
+                    robo->id, robo->position.x, robo->position.y, temp.x, temp.y);
             robo->position.x = temp.x;
             robo->position.y = temp.y;
             if (arena.Board[robo->position.x][robo->position.y].terrain != 2 && in_swamp){
@@ -149,18 +167,21 @@ void Sistema(Maquina *robo)
         arena.Board[robo->position.x][robo->position.y].robo = robo;
         }
     }
+    //Ação FETCH
     else if (tmp.ac == 10) {
         if (arena.Board[temp.x][temp.y].crystall > 0) {
             arena.Board[temp.x][temp.y].crystall--;
             robo->n_crystalls++;
         }
     }
+    //Ação DEPO
     else if (tmp.ac == 20) {
         if (robo->n_crystalls > 0){
             arena.Board[temp.x][temp.y].crystall += robo->n_crystalls;
             robo->n_crystalls = 0;
         }
     }
+    //Ação ATK
     else if (tmp.ac == 30) {
         if (arena.Board[temp.x][temp.y].robo != NULL) {
             if (arena.Board[temp.x][temp.y].robo->n_crystalls > 0) {
