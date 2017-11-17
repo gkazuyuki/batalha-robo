@@ -16,6 +16,10 @@ INSTR SYS[] = {
     {END, 0},
 };
 
+INSTR Test[] = {
+    {MOV, 2}, 
+};
+
 INSTR Atack[] = {
     {ATK, 0},
     {ATK, 1},
@@ -50,9 +54,15 @@ INSTR fat[] = {
     {RET,  0}   // 20
 };
 
+/*
 INSTR *army_prog1[] = {Atack, fat, SYS};
 INSTR *army_prog2[] = {SYS, fat, fat};
 INSTR *army_prog3[] = {fat, Atack, SYS};
+*/
+
+INSTR *army_prog1[] = {SYS, SYS, SYS};
+INSTR *army_prog2[] = {SYS, SYS, SYS};
+INSTR *army_prog3[] = {SYS, SYS, SYS};
 
 int main() {
     Arena *nova_arena;
@@ -72,7 +82,7 @@ int main() {
     pos army_pos3[] = {{13, 1}, {14, 2}, {13, 2}};
     InsereExercito("Ultramarines", 3, hq_pos3, army_pos3, army_prog3, 3, display);
 
-    while (arena.time < 5)
+    while (arena.time < 50)
         Atualiza(display);
     RemoveExercito("Black_Templars");
     RemoveExercito("Dark_Angels");

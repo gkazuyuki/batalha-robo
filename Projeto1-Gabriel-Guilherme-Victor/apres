@@ -33,8 +33,10 @@ def convert(i ,j):
     """
     Converte a coordenada (i,j) para a posição em pixels na janela
     """
-    x = (1 + i%2)*l + 2*j*l
-    y = 1.5*i*L + L
+    #x = (1 + i%2)*l + 2*j*l
+    #y = 1.5*i*L + L
+    x = L + i*(L + l/2)
+    y = l + 2*j*l + (i%2)*l
     return x,y
 
 class Robô(pg.sprite.Sprite):
@@ -78,6 +80,7 @@ class cell:
         s.cor = (200,200,200)
 
         # Vértices do hexágono
+        '''
         s.pontos = (
             (s.cx,   s.cy-L),
             (s.cx+l, s.cy-L/2),
@@ -86,6 +89,16 @@ class cell:
             (s.cx-l, s.cy+L/2),
             (s.cx-l, s.cy-L/2),
             )
+        '''
+
+        s.pontos = (
+        	(s.cx-L/2, s.cy+l),
+        	(s.cx+L/2, s.cy+l),
+        	(s.cx+L, s.cy),
+        	(s.cx+L/2, s.cy-l),
+        	(s.cx-L/2, s.cy-l),
+        	(s.cx-L, s.cy),
+        	)
         
     def draw(s) :
         """

@@ -93,7 +93,7 @@ void Atualiza(FILE *display)
             /*Vê se o robo ainda não foi destruido.
              */
             if (arena.Board[arena.army_vector[i].robos[j]->position.x][arena.army_vector[i].robos[j]->position.y].robo)
-                exec_maquina(arena.army_vector[i].robos[j], 50, display);
+                exec_maquina(arena.army_vector[i].robos[j], 10, display);
         }
     }
     /*O tempo esta sendo contado por iteração da atualiza.
@@ -117,6 +117,12 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
          arena.army_vector[arena.top].robos[i]->id = arena.next_id; // Identificação do robô no controlador gráfico.
          arena.next_id++; // Atualiza ID do próximo robô a ser criado.
          fprintf(display, "%s", concat("rob assets/", name, ".png\n")); // Registra robô no controlador gráfico.
+         fprintf(display, "%d %d %d %d %d\n",
+                    arena.army_vector[arena.top].robos[i]->id, 
+                    arena.army_vector[arena.top].robos[i]->position.x, 
+                    arena.army_vector[arena.top].robos[i]->position.y,
+                    arena.army_vector[arena.top].robos[i]->position.x, 
+                    arena.army_vector[arena.top].robos[i]->position.y);
          arena.Board[army_poss[i].x][army_poss[i].y].armyID = army_tag;
          arena.Board[army_poss[i].x][army_poss[i].y].robo = arena.army_vector[arena.top].robos[i];
     }
@@ -155,7 +161,6 @@ void Sistema(Maquina *robo, FILE *display)
     if (tmp.ac == 0) {
         if (arena.Board[robo->position.x][robo->position.y].terrain == 2) in_swamp = 1; //sair do pantano para uma estrada custa 1
         if (arena.Board[temp.x][temp.y].robo == NULL) {
-            printf("FOI\n");
             fprintf(display, "%d %d %d %d %d\n",
                     robo->id, robo->position.x, robo->position.y, temp.x, temp.y);
             robo->position.x = temp.x;
