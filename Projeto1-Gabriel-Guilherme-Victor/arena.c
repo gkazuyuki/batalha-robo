@@ -73,7 +73,7 @@ pos numToPos(int n, pos x)
     return y;
 }
 
-Arena *InicializaArena(int size, int army_number)
+Arena *InicializaArena(int size, int army_number, FILE *display)
 {
     Arena *new_arena = emalloc(size*sizeof(Arena));
     new_arena->size = size;
@@ -92,6 +92,12 @@ Arena *InicializaArena(int size, int army_number)
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
             new_board[i][j].crystall = rand()%3; // 0, 1 ou 2 cristais na posição
+            if (new_board[i][j].crystall > 0) {
+                fprintf(stderr, "%d\n", j);
+                fprintf(display, "cristais %d %d %d", new_board[i][j].crystall, i, j);
+                fflush(display);
+                fprintf(stderr, "cristais %d %d %d", new_board[i][j].crystall, i, j);
+            }
             new_board[i][j].terrain = rand()%3; //Dois tipos de terreno: estrada, pantano.
             new_board[i][j].HQ = 0; //Sem HQ
             new_board[i][j].armyID = 0; //Inicializa em robos

@@ -63,11 +63,12 @@ INSTR *army_prog3[] = {fat, Atack, SYS};
 INSTR *army_prog1[] = {Test};
 
 int main() {
+    FILE *display = popen("./apres", "w");
     Arena *nova_arena;
     //nova_arena = InicializaArena(50, 3);
-    nova_arena = InicializaArena(15, 1);
+    nova_arena = InicializaArena(15, 1, display);
     arena = *nova_arena;
-    FILE *display = popen("./apres", "w");
+    
 
     /*
     pos hq_pos1 = {1, 1};

@@ -43,7 +43,7 @@ pos numToPos(int n, pos x);
 
 void Atualiza(FILE *display);
 
-Arena *InicializaArena(int size, int army_number);
+Arena *InicializaArena(int size, int army_number, FILE *display);
 
 void destroyArena(int n);
 
