@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 #include "maq.h"
 
 typedef struct {
@@ -38,7 +39,7 @@ typedef struct {
 
 Arena arena;
 
-pos numbToPos(int n, pos x);
+pos numToPos(int n, pos x);
 
 void Atualiza(FILE *display);
 

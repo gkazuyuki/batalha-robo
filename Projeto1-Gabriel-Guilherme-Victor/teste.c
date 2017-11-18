@@ -17,7 +17,7 @@ INSTR SYS[] = {
 };
 
 INSTR Test[] = {
-    {MOV, 2}, 
+    {MOV, 1}, 
 };
 
 INSTR Atack[] = {
@@ -60,16 +60,16 @@ INSTR *army_prog2[] = {SYS, fat, fat};
 INSTR *army_prog3[] = {fat, Atack, SYS};
 */
 
-INSTR *army_prog1[] = {SYS, SYS, SYS};
-INSTR *army_prog2[] = {SYS, SYS, SYS};
-INSTR *army_prog3[] = {SYS, SYS, SYS};
+INSTR *army_prog1[] = {Test};
 
 int main() {
     Arena *nova_arena;
-    nova_arena = InicializaArena(50, 3);
+    //nova_arena = InicializaArena(50, 3);
+    nova_arena = InicializaArena(15, 1);
     arena = *nova_arena;
     FILE *display = popen("./apres", "w");
 
+    /*
     pos hq_pos1 = {1, 1};
     pos army_pos1[] = {{1, 2}, {2, 2}, {2, 1}};
     InsereExercito("Black_Templars", 3, hq_pos1, army_pos1, army_prog1, 1, display);
@@ -77,16 +77,22 @@ int main() {
     pos hq_pos2 = {7, 14};
     pos army_pos2[] = {{7, 13}, {6, 14}, {5, 14}};
     InsereExercito("Dark_Angels", 3, hq_pos2, army_pos2, army_prog2, 2, display);
-
+	
     pos hq_pos3 = {14, 1};
     pos army_pos3[] = {{13, 1}, {14, 2}, {13, 2}};
     InsereExercito("Ultramarines", 3, hq_pos3, army_pos3, army_prog3, 3, display);
+	*/
+
+    pos hq_pos1 = {1, 1};
+    pos army_pos1[] = {{2, 2}};
+
+    InsereExercito("Black_Templars", 1, hq_pos1, army_pos1, army_prog1, 1, display);
 
     while (arena.time < 50)
         Atualiza(display);
     RemoveExercito("Black_Templars");
-    RemoveExercito("Dark_Angels");
-    RemoveExercito("Ultramarines");
+    //RemoveExercito("Dark_Angels");
+    //RemoveExercito("Ultramarines");
     destroyArena(arena.size);
     pclose(display);
 

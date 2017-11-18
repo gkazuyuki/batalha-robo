@@ -291,7 +291,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
         case ATR: ;
             x = desempilha(pil);
             pos z;
-            z = numbToPos(x.n, m->position);
+            z = numToPos(x.n, m->position);
             y.t = NUM;
             if (arg.n == 0) {
                 y.n = arena.Board[z.x][z.y].terrain;

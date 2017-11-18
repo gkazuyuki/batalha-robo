@@ -14,7 +14,24 @@ char* concat(const char *s1, const char *s2, const char *s3)
     return result;
 }
 
-pos numbToPos(int n, pos x)
+/* Recebe uma posição na matriz hexagonal x e uma direção n. Retorna uma nova 
+ * posição que segue o mapa abaixo:
+                                      ____
+                                     /    \
+                                ____/  0   \____
+                               /    \      /    \
+                              /  5   \____/  1   \
+                              \      /    \      /
+                               \____/ POS  \____/
+                               /    \      /    \
+                              /  4   \____/  2   \
+                              \      /    \      /
+                               \____/  3   \____/
+                                    \      /
+                                     \____/
+
+*/
+pos numToPos(int n, pos x)
 {
     pos y;
     if (n == 0) {
@@ -23,11 +40,17 @@ pos numbToPos(int n, pos x)
     }
     else if (n == 1) {
         y.x = x.x + 1;
-        y.y = x.y - 1;
+        if (x.x % 2 == 0)
+            y.y = x.y - 1;
+        else 
+            y.y = x.y;
     }
     else if (n == 2) {
         y.x = x.x + 1;
-        y.y = x.y + 1;
+        if (x.x % 2 == 0)
+            y.y = x.y;
+        else
+            y.y = x.y + 1;
     }
     else if (n == 3) {
         y.x = x.x;
@@ -35,15 +58,20 @@ pos numbToPos(int n, pos x)
     }
     else if (n == 4) {
         y.x = x.x - 1;
-        y.y = x.y + 1;
+        if (x.x % 2 == 0)
+            y.y = x.y;
+        else
+            y.y = x.y + 1;
     }
     else if (n == 5) {
         y.x = x.x - 1;
-        y.y = x.y;
+        if (x.x % 2 == 0)
+            y.y = x.y - 1;
+        else
+            y.y = x.y;
     }
     return y;
 }
-
 
 Arena *InicializaArena(int size, int army_number)
 {
@@ -117,12 +145,15 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
          arena.army_vector[arena.top].robos[i]->id = arena.next_id; // Identificação do robô no controlador gráfico.
          arena.next_id++; // Atualiza ID do próximo robô a ser criado.
          fprintf(display, "%s", concat("rob assets/", name, ".png\n")); // Registra robô no controlador gráfico.
+         // Imprime a primeira posição do robô
          fprintf(display, "%d %d %d %d %d\n",
                     arena.army_vector[arena.top].robos[i]->id, 
                     arena.army_vector[arena.top].robos[i]->position.x, 
                     arena.army_vector[arena.top].robos[i]->position.y,
                     arena.army_vector[arena.top].robos[i]->position.x, 
                     arena.army_vector[arena.top].robos[i]->position.y);
+         fflush(display); // Força os comandos acima executar imediatamente.
+         sleep(2); //RETIRAR ISSO AQUI DEBUG
          arena.Board[army_poss[i].x][army_poss[i].y].armyID = army_tag;
          arena.Board[army_poss[i].x][army_poss[i].y].robo = arena.army_vector[arena.top].robos[i];
     }
@@ -155,7 +186,7 @@ void Sistema(Maquina *robo, FILE *display)
 {
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
     int in_swamp = 0;
-    pos temp = numbToPos(aux.n, robo->position);
+    pos temp = numToPos(aux.n, robo->position);
     
     //Ação MOV
     if (tmp.ac == 0) {
@@ -163,6 +194,7 @@ void Sistema(Maquina *robo, FILE *display)
         if (arena.Board[temp.x][temp.y].robo == NULL) {
             fprintf(display, "%d %d %d %d %d\n",
                     robo->id, robo->position.x, robo->position.y, temp.x, temp.y);
+            fflush(display); // Força os comandos acima executar imediatamente.
             robo->position.x = temp.x;
             robo->position.y = temp.y;
             if (arena.Board[robo->position.x][robo->position.y].terrain != 2 && in_swamp){
