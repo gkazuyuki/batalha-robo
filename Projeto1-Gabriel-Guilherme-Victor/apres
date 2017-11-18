@@ -78,13 +78,22 @@ class Cristal():
         """
         x, y = convert(s.x,s.y)
 
-        # fronteiras do sprite
+        # fronteiras do sprite-10
         l0,h0,l1,h1 = s.rect
 
         # corrije a posição de acordo com o tamanho do sprite
         s.rect.topleft = [x-l1/2,y-h1/2]
         # desenha
         scr.blit(s.image, s.rect)
+
+        # configura a fonte a ser usada
+        myFont = pg.font.SysFont("Poppins", 32)
+
+        # renderiza a fonte
+        label = myFont.render(str(s.num), 1, [0,0,0])
+
+        # desenha o nº de cristais naquela posição
+        scr.blit(label, [x-6, y-10])
 
 class cell:
     """
@@ -150,7 +159,7 @@ for line in fileinput.input():
         continue
 
     if r[0] == 'cristais':
-        cristals.append(Cristal(r[1], r[2], r[3]))
+        cristals.append(Cristal(int(r[1]), int(r[2]), int(r[3])))
         cristals[-1].draw()
         continue
 

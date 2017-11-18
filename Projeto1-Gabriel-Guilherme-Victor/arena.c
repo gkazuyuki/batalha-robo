@@ -91,12 +91,17 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
     srand(time(NULL));
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
-            new_board[i][j].crystall = rand()%3; // 0, 1 ou 2 cristais na posição
+            double prob = (double)rand()/(double)RAND_MAX;
+            if (prob < (double)1/4) {
+                if (prob > (double)1/8) new_board[i][j].crystall = 1;
+                else if (prob < (((double)1/8)*((double)3/4))) new_board[i][j].crystall = 2;
+                else new_board[i][j].crystall = 3;
+            }
+            else 
+                new_board[i][j].crystall = 0; // 0 cristais na posição
             if (new_board[i][j].crystall > 0) {
-                fprintf(stderr, "%d\n", j);
-                fprintf(display, "cristais %d %d %d", new_board[i][j].crystall, i, j);
+                fprintf(display, "cristais %d %d %d\n", new_board[i][j].crystall, i, j);
                 fflush(display);
-                fprintf(stderr, "cristais %d %d %d", new_board[i][j].crystall, i, j);
             }
             new_board[i][j].terrain = rand()%3; //Dois tipos de terreno: estrada, pantano.
             new_board[i][j].HQ = 0; //Sem HQ
@@ -222,6 +227,8 @@ void Sistema(Maquina *robo, FILE *display)
         if (robo->n_crystalls > 0){
             arena.Board[temp.x][temp.y].crystall += robo->n_crystalls;
             robo->n_crystalls = 0;
+            fprintf(display, "cristais %d %d %d\n", arena.Board[temp.x][temp.y].crystall, temp.x, temp.y);
+            fflush(display);
         }
     }
     //Ação ATK
