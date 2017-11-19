@@ -135,7 +135,7 @@ class cell:
         	(s.cx-L/2, s.cy-l),
         	(s.cx-L, s.cy),
         	)
-        
+
     def draw(s) :
         """
         Desenha a célula
@@ -173,7 +173,7 @@ for line in fileinput.input():
         break
 
     # linha começando com 'rob', inclui um robô,
-    # o segundo argumento na linha é a imagem   
+    # o segundo argumento na linha é a imagem
     if r[0] == 'rob':
         robs.append(Robô(r[1]))
         continue

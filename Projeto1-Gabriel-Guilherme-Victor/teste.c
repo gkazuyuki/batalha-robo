@@ -32,10 +32,17 @@ INSTR DepTest[] = {
 
 INSTR Atack[] = {
     {ATK, 0},
+    {ATK, 0},
     {ATK, 1},
+    {ATK, 1},
+    {ATK, 2},
+    {ATK, 2},
+    {ATK, 3},
+    {ATK, 3},
+    {ATK, 4},
     {ATK, 4},
     {ATK, 5},
-    {END, 0},
+    {ATK, 5},
 };
 
 INSTR fat[] = {
@@ -64,7 +71,8 @@ INSTR fat[] = {
     {RET,  0}   // 20
 };
 
-INSTR *army_prog1[] = {DepTest};
+INSTR *army_prog1[] = {Atack};
+INSTR *army_prog2[] = {Atack};
 
 /*
 INSTR *army_prog1[] = {Test, Test, Test};
@@ -95,14 +103,17 @@ int main() {
 
     pos hq_pos1 = {1, 1};
     pos army_pos1[] = {{7, 7}};
+    pos hq_pos2 = {2, 2};
+    pos army_pos2[] = {{7, 6}};
 
     InsereExercito("Black_Templars", 1, hq_pos1, army_pos1, army_prog1, 1, display);
+    InsereExercito("Ultramarines", 1, hq_pos2, army_pos2, army_prog2, 2, display);
 
     while (arena.time < 100)
         Atualiza(display);
     RemoveExercito("Black_Templars");
     //RemoveExercito("Dark_Angels");
-    //RemoveExercito("Ultramarines");
+    RemoveExercito("Ultramarines");
     destroyArena(arena.size);
     pclose(display);
 
