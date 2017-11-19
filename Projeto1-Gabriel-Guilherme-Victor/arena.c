@@ -231,8 +231,10 @@ void Sistema(Maquina *robo, FILE *display)
     //Ação FETCH
     else if (tmp.ac == 10) {
         if (arena.Board[temp.x][temp.y].crystall > 0) {
-            arena.Board[temp.x][temp.y].crystall--;
-            robo->n_crystalls++;
+            robo->n_crystalls += arena.Board[temp.x][temp.y].crystall;
+            arena.Board[temp.x][temp.y].crystall = 0;
+            fprintf(display, "rm_cristais %d %d\n", temp.x, temp.y);
+            fflush(display);
         }
         robo->counter += 3;
     }
@@ -260,8 +262,7 @@ void Sistema(Maquina *robo, FILE *display)
                     arena.Board[temp.x][temp.y].armyID = 0;
                     arena.Board[temp.x][temp.y].robo = NULL;
                     fprintf(display, "%d %d %d %d %d\n",
-                            x, temp.x, temp.y, 14, 14);
-                    fprintf(display, "morre %d %d\n", temp.x, temp.y);
+                            x, temp.x, temp.y, 17, 17);
                     fflush(display);
                 }
             }

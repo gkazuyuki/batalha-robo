@@ -12,7 +12,7 @@ from math import *
 pg.init()                                 # inicialização do sistema
 
 # altura e largura da arena, em células
-H, W = 15,15
+H, W = 18,18
 
 # largura da célula
 l = 30
@@ -189,6 +189,17 @@ for line in fileinput.input():
     if r[0] == 'cristais':
         cristals.append(Cristal(int(r[1]), int(r[2]), int(r[3])))
         cristals[-1].draw()
+        continue
+
+    if r[0] == 'rm_cristais':
+        oi, oj = list(map(int, r[1:]))
+        arena[oi][oj].draw()
+        temp = 0
+        for i in cristals:
+            if (i.x == r[1] and i.y == r[1]) :
+                temp = i
+        if(temp) :
+            cristals.remove(temp)
         continue
 
     if r[0] == 'base':
