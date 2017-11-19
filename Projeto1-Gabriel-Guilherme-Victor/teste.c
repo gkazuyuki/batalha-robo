@@ -118,7 +118,7 @@ int main() {
     sleep(3);
     pclose(display);
 
-    
+
 
     return 0;
 }

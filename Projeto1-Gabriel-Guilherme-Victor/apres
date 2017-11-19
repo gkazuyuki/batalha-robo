@@ -165,7 +165,7 @@ bases = []
 
 # atualiza a janela
 atu()
-
+from time import sleep
 # Leitura dos comandos pela entrada padrão ou de um arquivo
 for line in fileinput.input():
     r = line.split()
@@ -195,14 +195,6 @@ for line in fileinput.input():
         bases.append(Base(r[1], int(r[2]), int(r[3])))
         arena[int(r[2])][int(r[3])].draw()
         bases[-1].draw()
-        continue
-
-    if r[0] == 'morre':
-        arena[int(r[1])][int(r[2])].draw()
-        # Verifica se algum cristal estava em r[1],r[2] e redesenha
-        for i in cristals:
-            if (i.x == int(r[1]) and i.y == int(r[2])):
-                i.draw()
         continue
 
     # linha de movimentação:

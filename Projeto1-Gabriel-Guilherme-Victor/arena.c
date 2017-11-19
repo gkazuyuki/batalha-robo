@@ -189,7 +189,6 @@ void RemoveExercito(char *name)
             if (arena.army_vector[i].robos[j]){
                 arena.Board[arena.army_vector[i].robos[j]->position.x][arena.army_vector[i].robos[j]->position.y].robo = NULL;
                 arena.Board[arena.army_vector[i].robos[j]->position.x][arena.army_vector[i].robos[j]->position.y].armyID = 0;
-                destroi_maquina(arena.army_vector[i].robos[j]);
             }
         }
         free(arena.army_vector[i].robos);
@@ -206,6 +205,10 @@ void Sistema(Maquina *robo, FILE *display)
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
     int in_swamp = 0;
     pos temp = numToPos(aux.n, robo->position);
+    if (temp.x >= arena.size || temp.y >= arena.size){
+        robo->counter += 1;
+        return;
+    }
     //Ação MOV
     if (tmp.ac == 0) {
         if (arena.Board[robo->position.x][robo->position.y].terrain == 2) in_swamp = 1; //sair do pantano para uma estrada custa 1
@@ -251,11 +254,13 @@ void Sistema(Maquina *robo, FILE *display)
                 arena.Board[temp.x][temp.y].robo->n_crystalls = 0;
             }
             else{
-                printf("ATACOU %d\n", arena.Board[temp.x][temp.y].robo->armyID);
                 arena.Board[temp.x][temp.y].robo->HP -= 50;
                 if (arena.Board[temp.x][temp.y].robo->HP <= 0){
+                    int x = arena.Board[temp.x][temp.y].robo->id;
                     arena.Board[temp.x][temp.y].armyID = 0;
                     arena.Board[temp.x][temp.y].robo = NULL;
+                    fprintf(display, "%d %d %d %d %d\n",
+                            x, temp.x, temp.y, 14, 14);
                     fprintf(display, "morre %d %d\n", temp.x, temp.y);
                     fflush(display);
                 }
