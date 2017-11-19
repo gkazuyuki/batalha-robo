@@ -116,7 +116,7 @@ class cell:
     """
     Representa uma das células da arena
     """
-    def __init__(s,i,j):
+    def __init__(s,i,j, cor):
         """
         Construtor, i e j formam a coordenada
         """
@@ -149,7 +149,7 @@ arena = []
 for i in range(15):
     arena.append([])
     for j in range(15):
-        arena[i].append(cell(i,j))
+        arena[i].append(cell(i,j, (200,200,200)))
         arena[i][j].draw()
 
 # lista dos robôs definidos
@@ -176,6 +176,14 @@ for line in fileinput.input():
     # o segundo argumento na linha é a imagem   
     if r[0] == 'rob':
         robs.append(Robô(r[1]))
+        continue
+
+    if r[0] == 'cel':
+        if (int(r[3]) == 2):
+            #152,160,53
+            #(155,104,37)
+            arena[int(r[1])][int(r[2])].cor = (35, 45, 17)
+            arena[int(r[1])][int(r[2])].draw()
         continue
 
     if r[0] == 'cristais':

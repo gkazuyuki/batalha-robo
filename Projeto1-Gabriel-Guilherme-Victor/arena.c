@@ -91,20 +91,23 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
     srand(time(NULL));
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
-            /*
+            new_board[i][j].terrain = rand()%3; //Dois tipos de terreno: estrada, pantano.
+            fprintf(display, "cel %d %d %d\n", i, j, new_board[i][j].terrain);
+            fflush(display);
+            
             double prob = (double)rand()/(double)RAND_MAX;
             if (prob < (double)1/4) {
                 if (prob > (double)1/8) new_board[i][j].crystall = 1;
                 else if (prob < (((double)1/8)*((double)3/4))) new_board[i][j].crystall = 2;
                 else new_board[i][j].crystall = 3;
             }
-            else*/
+            else
                 new_board[i][j].crystall = 0; // 0 cristais na posição
+            
             if (new_board[i][j].crystall > 0) {
                 fprintf(display, "cristais %d %d %d\n", new_board[i][j].crystall, i, j);
                 fflush(display);
             }
-            new_board[i][j].terrain = rand()%3; //Dois tipos de terreno: estrada, pantano.
             new_board[i][j].HQ = 0; //Sem HQ
             new_board[i][j].armyID = 0; //Inicializa em robos
         }
