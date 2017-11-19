@@ -167,31 +167,34 @@ bases = []
 atu()
 from time import sleep
 # Leitura dos comandos pela entrada padrão ou de um arquivo
-for line in fileinput.input():
+for line in fileinput.input() :
     r = line.split()
 
     # linha começando com 'fim', termina o programa
-    if r[0] == 'fim':
+    if r[0] == 'fim' :
         break
 
     # linha começando com 'rob', inclui um robô,
     # o segundo argumento na linha é a imagem
-    if r[0] == 'rob':
+    if r[0] == 'rob' :
         robs.append(Robô(r[1]))
+        pg.display.update()
         continue
 
-    if r[0] == 'cel':
-        if (int(r[3]) == 2):
+    if r[0] == 'cel' :
+        if (int(r[3]) == 2) :
             arena[int(r[1])][int(r[2])].cor = (35, 45, 17)
             arena[int(r[1])][int(r[2])].draw()
+        pg.display.update()
         continue
 
-    if r[0] == 'cristais':
+    if r[0] == 'cristais' :
         cristals.append(Cristal(int(r[1]), int(r[2]), int(r[3])))
         cristals[-1].draw()
+        pg.display.update()
         continue
 
-    if r[0] == 'rm_cristais':
+    if r[0] == 'rm_cristais' :
         oi, oj = list(map(int, r[1:]))
         arena[oi][oj].draw()
         temp = 0
@@ -200,14 +203,19 @@ for line in fileinput.input():
                 temp = i
         if(temp) :
             cristals.remove(temp)
+        pg.display.update()
         continue
 
-    if r[0] == 'base':
+    if r[0] == 'base' :
         bases.append(Base(r[1], int(r[2]), int(r[3])))
         arena[int(r[2])][int(r[3])].draw()
         bases[-1].draw()
+        pg.display.update()
         continue
-
+    if r[0] == 'morre' :
+        arena[int(r[1])][int(r[2])].draw()
+        pg.display.update()
+        continue
     # linha de movimentação:
     # robô, corrdenadas originais, coordenadas finais
     ri, oi, oj, di, dj = list(map(int, r))
@@ -220,13 +228,13 @@ for line in fileinput.input():
             if (i.x == oi and i.y == oj):
                 i.draw()
     # desenha o robô na célula de destino
-    if 0 <= di  < W and 0 <= dj < H and ri < len(robs):
+    if 0 <= di  < W and 0 <= dj < H and ri < len(robs) :
         robs[ri].draw(di,dj)
 
     # tempo de espera para atualização, apenas para testes
     pg.time.wait(100)
 
-    atu()
+    pg.display.update()
 
 pg.quit()
 # Local variables:

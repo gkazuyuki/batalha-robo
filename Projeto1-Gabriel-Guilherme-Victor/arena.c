@@ -261,8 +261,7 @@ void Sistema(Maquina *robo, FILE *display)
                     int x = arena.Board[temp.x][temp.y].robo->id;
                     arena.Board[temp.x][temp.y].armyID = 0;
                     arena.Board[temp.x][temp.y].robo = NULL;
-                    fprintf(display, "%d %d %d %d %d\n",
-                            x, temp.x, temp.y, 17, 17);
+                    fprintf(display, "morre %d %d\n", temp.x, temp.y);
                     fflush(display);
                 }
             }
