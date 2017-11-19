@@ -25,6 +25,8 @@ typedef struct {
     int id;
     pos position;
     int n_crystalls;
+    int HP;
+    int counter;
 } Maquina;
 
 Maquina *cria_maquina(INSTR *p);

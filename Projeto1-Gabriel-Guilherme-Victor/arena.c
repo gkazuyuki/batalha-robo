@@ -3,7 +3,7 @@
 // Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
 
 #include "arena.h"
-
+#include <unistd.h>
 // Recebe três strings e concatena.
 char* concat(const char *s1, const char *s2, const char *s3)
 {
@@ -14,7 +14,7 @@ char* concat(const char *s1, const char *s2, const char *s3)
     return result;
 }
 
-/* Recebe uma posição na matriz hexagonal x e uma direção n. Retorna uma nova 
+/* Recebe uma posição na matriz hexagonal x e uma direção n. Retorna uma nova
  * posição que segue o mapa abaixo:
                                       ____
                                      /    \
@@ -42,7 +42,7 @@ pos numToPos(int n, pos x)
         y.x = x.x + 1;
         if (x.x % 2 == 0)
             y.y = x.y - 1;
-        else 
+        else
             y.y = x.y;
     }
     else if (n == 2) {
@@ -80,7 +80,7 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
     new_arena->army_number = army_number;
     new_arena->top = 0;
     new_arena->time = 0; //FALTA O TEMPO AQUI
-    new_arena->next_id = 0; 
+    new_arena->next_id = 0;
 
     board new_board = emalloc(size*sizeof(node*)); //Criando tabuleiro nxn
     for (int i = 0; i < size; i++) {
@@ -98,7 +98,7 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
                 else if (prob < (((double)1/8)*((double)3/4))) new_board[i][j].crystall = 2;
                 else new_board[i][j].crystall = 3;
             }
-            else*/ 
+            else*/
                 new_board[i][j].crystall = 0; // 0 cristais na posição
             if (new_board[i][j].crystall > 0) {
                 fprintf(display, "cristais %d %d %d\n", new_board[i][j].crystall, i, j);
@@ -120,7 +120,7 @@ void destroyArena(int n)
     for (int i = 0; i < n; i++)
         free(arena.Board[i]);
     free(arena.Board);
-    return;    
+    return;
 }
 
 void Atualiza(FILE *display)
@@ -138,7 +138,7 @@ void Atualiza(FILE *display)
     }
     /*O tempo esta sendo contado por iteração da atualiza.
      */
-    arena.time += 1;
+    arena.time += 10;
     return;
 }
 
@@ -162,10 +162,10 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
          fprintf(display, "%s", concat("rob assets/", name, ".png\n")); // Registra robô no controlador gráfico.
          // Imprime a primeira posição do robô
          fprintf(display, "%d %d %d %d %d\n",
-                    arena.army_vector[arena.top].robos[i]->id, 
-                    arena.army_vector[arena.top].robos[i]->position.x, 
+                    arena.army_vector[arena.top].robos[i]->id,
+                    arena.army_vector[arena.top].robos[i]->position.x,
                     arena.army_vector[arena.top].robos[i]->position.y,
-                    arena.army_vector[arena.top].robos[i]->position.x, 
+                    arena.army_vector[arena.top].robos[i]->position.x,
                     arena.army_vector[arena.top].robos[i]->position.y);
          fflush(display); // Força os comandos acima executar imediatamente.
          //sleep(); //RETIRAR ISSO AQUI DEBUG
@@ -202,7 +202,6 @@ void Sistema(Maquina *robo, FILE *display)
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
     int in_swamp = 0;
     pos temp = numToPos(aux.n, robo->position);
-    
     //Ação MOV
     if (tmp.ac == 0) {
         if (arena.Board[robo->position.x][robo->position.y].terrain == 2) in_swamp = 1; //sair do pantano para uma estrada custa 1
@@ -212,10 +211,10 @@ void Sistema(Maquina *robo, FILE *display)
             fflush(display); // Força os comandos acima executar imediatamente.
             robo->position.x = temp.x;
             robo->position.y = temp.y;
-            if (arena.Board[robo->position.x][robo->position.y].terrain != 2 && in_swamp){
-                if (robo->n_crystalls > 0)
-                    robo->n_crystalls--;
-            }
+            if (arena.Board[robo->position.x][robo->position.y].terrain != 2 && in_swamp)
+                robo->counter += 2;
+            else
+                robo->counter += 3;
         arena.Board[robo->position.x][robo->position.y].robo = robo;
         }
     }
@@ -225,6 +224,7 @@ void Sistema(Maquina *robo, FILE *display)
             arena.Board[temp.x][temp.y].crystall--;
             robo->n_crystalls++;
         }
+        robo->counter += 3;
     }
     //Ação DEPO
     else if (tmp.ac == 20) {
@@ -234,6 +234,7 @@ void Sistema(Maquina *robo, FILE *display)
             fprintf(display, "cristais %d %d %d\n", arena.Board[temp.x][temp.y].crystall, temp.x, temp.y);
             fflush(display);
         }
+        robo->counter += 3;
     }
     //Ação ATK
     else if (tmp.ac == 30) {
@@ -247,6 +248,7 @@ void Sistema(Maquina *robo, FILE *display)
                 arena.Board[temp.x][temp.y].robo = NULL;
             }
         }
+        robo->counter += 3;
     }
     return;
 }

@@ -66,7 +66,9 @@ Maquina *cria_maquina(INSTR *p)
     if (!m) Fatal("Memória insuficiente",4);
     m->ip = 0;
     m->prog = p;
-    m->n_crystalls = 1;
+    m->n_crystalls = 0;
+    m->HP = 100;
+    m->counter = 0;
     return m;
 }
 
@@ -89,6 +91,12 @@ void exec_maquina(Maquina *m, int n, FILE *display)
     OPERANDO x, y;
 
     for (i = 0; i < n; i++) {
+        if (m->counter%6 != 0) {
+            m->counter += 1;
+            continue;
+        }
+        else
+            m->counter = 0;
         OpCode   opc = prg[ip].instr;
         OPERANDO arg;
         if (opc == ATR || opc == MOV ||opc == FETCH || opc == DEPO || opc == ATK){
@@ -347,5 +355,6 @@ void exec_maquina(Maquina *m, int n, FILE *display)
         D(imprime(pil,5));
         D(puts("\n"));
         ip++;
+        sleep(1);
     }
 }
