@@ -18,7 +18,6 @@ INSTR SYS[] = {
 
 INSTR Test[] = {
     {MOV, 1},
-
 };
 
 INSTR DepTest[] = {
@@ -61,48 +60,45 @@ INSTR fat[] = {
     {RET,  0}   // 20
 };
 
+INSTR *army_prog1[] = {DepTest};
+
 /*
-INSTR *army_prog1[] = {Atack, fat, SYS};
-INSTR *army_prog2[] = {SYS, fat, fat};
-INSTR *army_prog3[] = {fat, Atack, SYS};
-*/
-
-//INSTR *army_prog1[] = {DepTest};
-
 INSTR *army_prog1[] = {Test, Test, Test};
 INSTR *army_prog2[] = {Test, Test, Test};
 INSTR *army_prog3[] = {Test, Test, Test};
+*/
 
 int main() {
     FILE *display = popen("./apres", "w");
     Arena *nova_arena;
-    nova_arena = InicializaArena(50, 3, display);
-    //nova_arena = InicializaArena(15, 1, display);
+    //nova_arena = InicializaArena(15, 3, display);
+    nova_arena = InicializaArena(15, 1, display);
     arena = *nova_arena;  
 
+    /*
     pos hq_pos1 = {1, 1};
     pos army_pos1[] = {{1, 2}, {2, 2}, {2, 1}};
     InsereExercito("Black_Templars", 3, hq_pos1, army_pos1, army_prog1, 1, display);
 
-    pos hq_pos2 = {7, 14};
-    pos army_pos2[] = {{7, 13}, {6, 14}, {5, 14}};
+    pos hq_pos2 = {7, 9};
+    pos army_pos2[] = {{7, 8}, {6, 9}, {5, 8}};
     InsereExercito("Dark_Angels", 3, hq_pos2, army_pos2, army_prog2, 2, display);
 	
     pos hq_pos3 = {14, 1};
-    pos army_pos3[] = {{10, 1}, {11, 2}, {10, 2}};
+    pos army_pos3[] = {{6, 1}, {7, 2}, {6, 2}};
     InsereExercito("Ultramarines", 3, hq_pos3, army_pos3, army_prog3, 3, display);
-	
+	*/
 
-    //pos hq_pos1 = {1, 1};
-    //pos army_pos1[] = {{2, 2}};
+    pos hq_pos1 = {1, 1};
+    pos army_pos1[] = {{2, 2}};
 
-    //InsereExercito("Black_Templars", 1, hq_pos1, army_pos1, army_prog1, 1, display);
+    InsereExercito("Black_Templars", 1, hq_pos1, army_pos1, army_prog1, 1, display);
 
     while (arena.time < 50)
         Atualiza(display);
     RemoveExercito("Black_Templars");
-    RemoveExercito("Dark_Angels");
-    RemoveExercito("Ultramarines");
+    //RemoveExercito("Dark_Angels");
+    //RemoveExercito("Ultramarines");
     destroyArena(arena.size);
     pclose(display);
 
