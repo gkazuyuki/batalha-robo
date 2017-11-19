@@ -23,6 +23,7 @@ typedef struct {
     OPERANDO base;
     int ip;
     int id;
+    int armyID;
     pos position;
     int n_crystalls;
     int HP;

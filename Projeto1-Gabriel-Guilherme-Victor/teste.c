@@ -35,7 +35,7 @@ INSTR Atack[] = {
     {ATK, 1},
     {ATK, 4},
     {ATK, 5},
-    {END,  0},
+    {END, 0},
 };
 
 INSTR fat[] = {

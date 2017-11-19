@@ -94,7 +94,7 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
             new_board[i][j].terrain = rand()%3; //Dois tipos de terreno: estrada, pantano.
             fprintf(display, "cel %d %d %d\n", i, j, new_board[i][j].terrain);
             fflush(display);
-            
+
             double prob = (double)rand()/(double)RAND_MAX;
             if (prob < (double)1/4) {
                 if (prob > (double)1/8) new_board[i][j].crystall = 1;
@@ -103,7 +103,7 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
             }
             else
                 new_board[i][j].crystall = 0; // 0 cristais na posição
-            
+
             if (new_board[i][j].crystall > 0) {
                 fprintf(display, "cristais %d %d %d\n", new_board[i][j].crystall, i, j);
                 fflush(display);
@@ -160,6 +160,7 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
          arena.army_vector[arena.top].robos[i] = cria_maquina(program[i]);
          arena.army_vector[arena.top].robos[i]->position.x = army_poss[i].x;
          arena.army_vector[arena.top].robos[i]->position.y = army_poss[i].y;
+         arena.army_vector[arena.top].robos[i]->armyID = army_tag;
          arena.army_vector[arena.top].robos[i]->id = arena.next_id; // Identificação do robô no controlador gráfico.
          arena.next_id++; // Atualiza ID do próximo robô a ser criado.
          fprintf(display, "%s", concat("rob assets/", name, ".png\n")); // Registra robô no controlador gráfico.
@@ -212,6 +213,8 @@ void Sistema(Maquina *robo, FILE *display)
             fprintf(display, "%d %d %d %d %d\n",
                     robo->id, robo->position.x, robo->position.y, temp.x, temp.y);
             fflush(display); // Força os comandos acima executar imediatamente.
+            arena.Board[robo->position.x][robo->position.y].robo = NULL;
+            arena.Board[robo->position.x][robo->position.y].armyID = 0;
             robo->position.x = temp.x;
             robo->position.y = temp.y;
             if (arena.Board[robo->position.x][robo->position.y].terrain != 2 && in_swamp)
@@ -219,6 +222,7 @@ void Sistema(Maquina *robo, FILE *display)
             else
                 robo->counter += 3;
         arena.Board[robo->position.x][robo->position.y].robo = robo;
+        arena.Board[robo->position.x][robo->position.y].armyID = robo->armyID;
         }
     }
     //Ação FETCH
@@ -246,9 +250,12 @@ void Sistema(Maquina *robo, FILE *display)
                 robo->n_crystalls += arena.Board[temp.x][temp.y].robo->n_crystalls;
                 arena.Board[temp.x][temp.y].robo->n_crystalls = 0;
             }
-            else {
-                arena.Board[temp.x][temp.y].armyID = 0;
-                arena.Board[temp.x][temp.y].robo = NULL;
+            else{
+                arena.Board[temp.x][temp.y].robo->HP -= 50;
+                if (arena.Board[temp.x][temp.y].robo->HP == 0){
+                    arena.Board[temp.x][temp.y].armyID = 0;
+                    arena.Board[temp.x][temp.y].robo = NULL;
+                }
             }
         }
         robo->counter += 3;
