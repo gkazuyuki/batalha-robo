@@ -91,13 +91,14 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
     srand(time(NULL));
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
+            /*
             double prob = (double)rand()/(double)RAND_MAX;
             if (prob < (double)1/4) {
                 if (prob > (double)1/8) new_board[i][j].crystall = 1;
                 else if (prob < (((double)1/8)*((double)3/4))) new_board[i][j].crystall = 2;
                 else new_board[i][j].crystall = 3;
             }
-            else 
+            else*/ 
                 new_board[i][j].crystall = 0; // 0 cristais na posição
             if (new_board[i][j].crystall > 0) {
                 fprintf(display, "cristais %d %d %d\n", new_board[i][j].crystall, i, j);
@@ -146,10 +147,13 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
     arena.army_vector[arena.top].num_bots = n;
     arena.army_vector[arena.top].HQpos.x = HQ.x;
     arena.army_vector[arena.top].HQpos.y = HQ.y;
+    fprintf(display, "%s %d %d\n", concat("base assets/HQ", name, ".png"), HQ.x, HQ.y);
+    fflush(display);
     arena.army_vector[arena.top].chapter = emalloc(1 + (strlen(name))*sizeof(char));
     arena.army_vector[arena.top].chapter = strcpy(arena.army_vector[arena.top].chapter, name);
     arena.army_vector[arena.top].robos = emalloc(n*sizeof(Maquina *));
     for (int i = 0; i < n; i++){
+
          arena.army_vector[arena.top].robos[i] = cria_maquina(program[i]);
          arena.army_vector[arena.top].robos[i]->position.x = army_poss[i].x;
          arena.army_vector[arena.top].robos[i]->position.y = army_poss[i].y;
@@ -164,7 +168,7 @@ void InsereExercito(char *name, int n, pos HQ, pos *army_poss, INSTR **program, 
                     arena.army_vector[arena.top].robos[i]->position.x, 
                     arena.army_vector[arena.top].robos[i]->position.y);
          fflush(display); // Força os comandos acima executar imediatamente.
-         sleep(2); //RETIRAR ISSO AQUI DEBUG
+         //sleep(); //RETIRAR ISSO AQUI DEBUG
          arena.Board[army_poss[i].x][army_poss[i].y].armyID = army_tag;
          arena.Board[army_poss[i].x][army_poss[i].y].robo = arena.army_vector[arena.top].robos[i];
     }
