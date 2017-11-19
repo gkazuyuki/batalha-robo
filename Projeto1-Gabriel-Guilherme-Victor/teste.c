@@ -31,8 +31,8 @@ INSTR DepTest[] = {
 };
 
 INSTR Atack[] = {
-    {ATK, 0},
-    {ATK, 0},
+    {ATK, 5},
+    {ATK, 5},
     {ATK, 1},
     {ATK, 1},
     {ATK, 2},
@@ -41,8 +41,8 @@ INSTR Atack[] = {
     {ATK, 3},
     {ATK, 4},
     {ATK, 4},
-    {ATK, 5},
-    {ATK, 5},
+    {ATK, 0},
+    {ATK, 0},
 };
 
 INSTR fat[] = {
@@ -84,7 +84,7 @@ int main() {
     FILE *display = popen("./apres", "w");
     Arena *nova_arena;
     //nova_arena = InicializaArena(15, 3, display);
-    nova_arena = InicializaArena(15, 1, display);
+    nova_arena = InicializaArena(15, 2, display);
     arena = *nova_arena;
 
     /*
@@ -115,7 +115,10 @@ int main() {
     //RemoveExercito("Dark_Angels");
     RemoveExercito("Ultramarines");
     destroyArena(arena.size);
+    sleep(3);
     pclose(display);
+
+    
 
     return 0;
 }

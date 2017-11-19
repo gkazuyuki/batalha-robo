@@ -251,10 +251,13 @@ void Sistema(Maquina *robo, FILE *display)
                 arena.Board[temp.x][temp.y].robo->n_crystalls = 0;
             }
             else{
+                printf("ATACOU %d\n", arena.Board[temp.x][temp.y].robo->armyID);
                 arena.Board[temp.x][temp.y].robo->HP -= 50;
-                if (arena.Board[temp.x][temp.y].robo->HP == 0){
+                if (arena.Board[temp.x][temp.y].robo->HP <= 0){
                     arena.Board[temp.x][temp.y].armyID = 0;
                     arena.Board[temp.x][temp.y].robo = NULL;
+                    fprintf(display, "morre %d %d\n", temp.x, temp.y);
+                    fflush(display);
                 }
             }
         }

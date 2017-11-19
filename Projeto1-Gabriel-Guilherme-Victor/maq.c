@@ -355,6 +355,6 @@ void exec_maquina(Maquina *m, int n, FILE *display)
         D(imprime(pil,5));
         D(puts("\n"));
         ip++;
-        sleep(1);
+        //sleep(1);
     }
 }
