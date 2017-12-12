@@ -275,7 +275,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             m->Mem[arg.n] = desempilha(pil);
             break;
         case RCL: ;
-            empilha(pil,m->Mem[arg.n]); // Mudar isso (empilhar várias fita)
+            empilha(pil, m->Mem[arg.n]); // Mudar isso (empilhar várias fita)
             break;
         case END: ;
             return;
@@ -297,6 +297,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             exec->topo -= arg.n;
             break;
         case ATR: ;
+            arg = desempilha(pil);
             x = desempilha(pil);
             pos z;
             z = numToPos(x.n, m->position);
@@ -316,6 +317,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             empilha(pil, y);
             break;
         case MOV: ;
+            arg = desempilha(pil);
             tmp.t = NUM;
             tmp.ac = arg.n;
             empilha(pil, tmp);
@@ -325,6 +327,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             Sistema(m, display);
             break;
         case FETCH: ;
+            arg = desempilha(pil);
             tmp.t = NUM;
             tmp.ac = arg.n;
             empilha(pil, tmp);
@@ -334,6 +337,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             Sistema(m, display);
             break;
         case DEPO: ;
+            arg = desempilha(pil);
             tmp.t = NUM;
             tmp.ac = arg.n;
             empilha(pil, tmp);
@@ -343,6 +347,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             Sistema(m, display);
             break;
         case ATK: ;
+            arg = desempilha(pil);
             tmp.t = NUM;
             tmp.ac = arg.n;
             empilha(pil, tmp);
@@ -352,7 +357,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             Sistema(m, display);
             break;
         }
-        D(imprime(pil,5));
+        D(imprime(pil, 5));
         D(puts("\n"));
         ip++;
         //sleep(1);
