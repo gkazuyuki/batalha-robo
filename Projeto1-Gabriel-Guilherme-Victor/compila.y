@@ -94,12 +94,12 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
     /*ver que CHS é esse*/
     | '-' Expr %prec NEG  { printf("  {CHS,  0},\n"); }
 	| OPEN Expr CLOSE
-	| Expr LTt Expr  { AddInstr(LT,   0);}
-	| Expr GTt Expr  { AddInstr(GT,   0);}
-	| Expr LEt Expr  { AddInstr(LE,   0);}
-	| Expr GEt Expr  { AddInstr(GE,   0);}
-	| Expr EQt Expr  { AddInstr(EQ,   0);}
-	| Expr NEt Expr  { AddInstr(NE,   0);}
+	| Expr LTt Expr  { AddInstr(LT, 0);}
+	| Expr GTt Expr  { AddInstr(GT, 0);}
+	| Expr LEt Expr  { AddInstr(LE, 0);}
+	| Expr GEt Expr  { AddInstr(GE, 0);}
+	| Expr EQt Expr  { AddInstr(EQ, 0);}
+	| Expr NEt Expr  { AddInstr(NE, 0);}
 ;
 
 Cond: IF OPEN   Expr {
@@ -108,8 +108,20 @@ Cond: IF OPEN   Expr {
  		        }
 		        CLOSE  Bloco {
                     prog[pega_end()].op.val.n = ip;
-                };
-         /*adcionar regra do else aqui*/
+                }
+    /*ver isso funfa!!!*/
+    | IF OPEN   Expr {
+                    salva_end(ip);
+                    AddInstr(JIF,  0);
+                }
+                CLOSE Bloco {
+                    prog[pega_end()].op.val.n = ip + 1;
+                    salva_end(ip);
+                    AddInstr(JMP, 0);
+                }
+     ELSE Bloco {
+         prog[pega_end()].op.val.n = ip;
+     };
 
 
 Loop: WHILE OPEN {
@@ -117,7 +129,7 @@ Loop: WHILE OPEN {
             }
 	  		Expr {
                 salva_end(ip);
-                AddInstr(JIF,0);
+                AddInstr(JIF, 0);
             }
             CLOSE Bloco {
                 int ip2 = pega_end();
