@@ -36,6 +36,9 @@ void AddInstr(OpCode op, int val) {
 %token IF ELSE WHILE FUNC PRINT
 %token ATKt ATRt MOVt FETCHt DEPOt
 
+%nonassoc IFX
+%nonassoc ELSE
+
 %right ASGN
 %left ADDt SUBt
 %left MULt DIVt
@@ -103,26 +106,26 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 	| Expr NEt Expr  { AddInstr(NE, 0);}
 ;
 
-Cond: IF OPEN   Expr {
+Cond: IF OPEN   Expr  {
                     salva_end(ip);
                     AddInstr(JIF,  0);
  		        }
 		        CLOSE  Bloco {
                     prog[pega_end()].op = ip;
-                };
-    /*ver isso funfa!!!
-    | IF OPEN   Expr {
+                }
+    /*ver isso funfa!!!*/
+    | IF OPEN   Expr %prec IFX{
                     salva_end(ip);
                     AddInstr(JIF,  0);
                 }
                 CLOSE Bloco {
-                    prog[pega_end()].op.val.n = ip + 1;
+                    prog[pega_end()].op = ip + 1;
                     salva_end(ip);
                     AddInstr(JMP, 0);
                 }
      ELSE Bloco {
-         prog[pega_end()].op.val.n = ip;
-     };*/
+         prog[pega_end()].op = ip;
+     };
 
 
 Loop: WHILE OPEN {

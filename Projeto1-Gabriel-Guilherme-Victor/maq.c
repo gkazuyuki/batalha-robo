@@ -179,13 +179,13 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             x = desempilha(pil), y = desempilha(pil);
             tmp.t = NUM;
             tmp.n = 0;
-            if (x.t == y.t) {
+            if (y.t == x.t) {
                 if (x.t == NUM) {
-                    if (x.n == y.n)
+                    if (y.n == x.n)
                         tmp.n = 1;
                 }
                 else if (x.t == ACAO) {
-                    if (x.ac == y.ac)
+                    if (y.ac == x.ac)
                         tmp.n = 1;
                 }
             }
@@ -197,11 +197,11 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             tmp.n = 0;
             if (x.t == y.t) {
                 if (x.t == NUM) {
-                    if (x.n >= y.n)
+                    if (y.n > x.n)
                         tmp.n = 1;
                 }
                 else if (x.t == ACAO) {
-                    if (x.ac >= y.ac)
+                    if (y.ac > x.ac)
                         tmp.n = 1;
                 }
             }
@@ -211,13 +211,13 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             x = desempilha(pil), y = desempilha(pil);
             tmp.t = NUM;
             tmp.n = 0;
-            if (x.t == y.t) {
+            if (y.t == x.t) {
                 if (x.t == NUM) {
-                    if (x.n >= y.n)
+                    if (y.n >= x.n)
                         tmp.n = 1;
                     }
                 else if (x.t == ACAO) {
-                    if (x.ac >= y.ac)
+                    if (y.ac >= x.ac)
                         tmp.n = 1;
                 }
             }
@@ -227,13 +227,13 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             x = desempilha(pil), y = desempilha(pil);
             tmp.t = NUM;
             tmp.n = 0;
-            if (x.t == y.t) {
+            if (y.t == x.t) {
                 if (x.t == NUM) {
-                    if (x.n < y.n)
+                    if (y.n < x.n)
                         tmp.n = 1;
                 }
                 else if (x.t == ACAO) {
-                    if (x.ac < y.ac)
+                    if (y.ac < x.ac)
 	  	  	             tmp.n = 1;
                 }
             }
@@ -243,13 +243,13 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             x = desempilha(pil), y = desempilha(pil);
             tmp.t = NUM;
             tmp.n = 0;
-            if (x.t == y.t) {
+            if (y.t == x.t) {
                 if (x.t == NUM) {
-                    if (x.n <= y.n)
+                    if (y.n <= x.n)
                         tmp.n = 1;
                 }
                 else if (x.t == ACAO) {
-                    if (x.ac <= y.ac)
+                    if (y.ac <= x.ac)
                         tmp.n = 1;
                 }
             }
@@ -259,14 +259,14 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             x = desempilha(pil), y = desempilha(pil);
             tmp.t = NUM;
             tmp.n = 0;
-            if (x.t == y.t) {
+            if (y.t == x.t) {
                 if (x.t == NUM) {
-                    if (x.n != y.n)
+                    if (y.n != x.n)
                         tmp.n = 1;
                 }
             }
             else if (x.t == ACAO) {
-                if (x.ac != y.ac)
+                if (y.ac != x.ac)
                 tmp.n = 1;
             }
             empilha(pil, tmp);
