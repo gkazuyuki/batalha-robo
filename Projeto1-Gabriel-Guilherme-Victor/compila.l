@@ -20,8 +20,11 @@ while	{ return WHILE; }
 func|def { return FUNC; }
 print   { return PRINT; }
 
-atr { return ATR; }
-
+atr { return ATRt; }
+atk { return ATKt; }
+mov { return MOVt; }
+depo { return DEPOt; }
+fetch { return FETCHt; }
 
 {L}{H}* {
   strncpy(yylval.cod, yytext, 30);

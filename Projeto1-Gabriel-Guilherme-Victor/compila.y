@@ -16,7 +16,7 @@ static INSTR *prog;
 static int parmcnt = 0;		/* contador de parâmetros */
 
 void AddInstr(OpCode op, int val) {
-    prog[ip++] = (INSTR) {op,  {NUM, {val}}};
+    prog[ip++] = (INSTR) {op, val};
 }
 %}
 
@@ -34,6 +34,7 @@ void AddInstr(OpCode op, int val) {
 %token ADDt SUBt MULt DIVt ASGN OPEN CLOSE RETt EOL
 %token EQt NEt LTt LEt GTt GEt ABRE FECHA SEP
 %token IF ELSE WHILE FUNC PRINT
+%token ATKt ATRt MOVt FETCHt DEPOt
 
 %right ASGN
 %left ADDt SUBt
@@ -62,10 +63,10 @@ Comando: Expr EOL
             AddInstr(RET,0);
         }
         /***/
-        | MOV OPEN Expr CLOSE EOL { AddInstr(MOV, 0); }
-        | FETCH OPEN Expr CLOSE EOL { AddInstr(FETCH, 0); }
-        | DEPO OPEN Expr CLOSE EOL { AddInstr(DEPO, 0); }
-        | ATK OPEN Expr CLOSE EOL { AddInstr(ATK, 0); }
+        | MOVt OPEN Expr CLOSE EOL { AddInstr(MOV, 0); }
+        | FETCHt OPEN Expr CLOSE EOL { AddInstr(FETCH, 0); }
+        | DEPOt OPEN Expr CLOSE EOL { AddInstr(DEPO, 0); }
+        | ATKt OPEN Expr CLOSE EOL { AddInstr(ATK, 0); }
         /**/
         /* | EOL {printf("--> %d\n", ip);} */
 ;
@@ -84,7 +85,7 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 			        AddInstr(STO, s->val);
                 }
 
-    | ATR OPEN Expr SEP Expr CLOSE { AddInstr(ATR, 0);}
+    | ATRt OPEN Expr SEP Expr CLOSE { AddInstr(ATR, 0);}
 
     | Chamada
     | Expr ADDt Expr { AddInstr(ADD,  0); }
@@ -107,9 +108,9 @@ Cond: IF OPEN   Expr {
                     AddInstr(JIF,  0);
  		        }
 		        CLOSE  Bloco {
-                    prog[pega_end()].op.val.n = ip;
-                }
-    /*ver isso funfa!!!*/
+                    prog[pega_end()].op = ip;
+                };
+    /*ver isso funfa!!!
     | IF OPEN   Expr {
                     salva_end(ip);
                     AddInstr(JIF,  0);
@@ -121,7 +122,7 @@ Cond: IF OPEN   Expr {
                 }
      ELSE Bloco {
          prog[pega_end()].op.val.n = ip;
-     };
+     };*/
 
 
 Loop: WHILE OPEN {
@@ -134,7 +135,7 @@ Loop: WHILE OPEN {
             CLOSE Bloco {
                 int ip2 = pega_end();
                 AddInstr(JMP, pega_end());
-                prog[ip2].op.val.n = ip;
+                prog[ip2].op = ip;
 			};
 
 Bloco: ABRE Comandos FECHA ;
@@ -159,9 +160,8 @@ Func: FUNC ID {
          newtab(0);
      }
      Args CLOSE  Bloco{
-         AddInstr(LEAVE, 0);
          AddInstr(RET, 0);
-         prog[pega_end()].op.val.n = ip;
+         prog[pega_end()].op = ip;
          deltab();
      }
 	  ;
@@ -185,7 +185,6 @@ Chamada:ID OPEN {
                 yyerror("Função não definida\n");
                 YYABORT;
             }
-            AddInstr(ENTRY, lastval());
             /* Cópia dos parâmetros */
             while (parmcnt > 0)
                 AddInstr( STO, --parmcnt);
