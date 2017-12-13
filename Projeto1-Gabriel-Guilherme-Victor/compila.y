@@ -62,9 +62,11 @@ Comando: Expr EOL
         | Func
         | PRINT Expr EOL { AddInstr(PRN, 0); }
         | RETt EOL {
+            AddInstr(FRE, 0);
             AddInstr(RET, 0);
         }
         | RETt OPEN  Expr CLOSE EOL {
+            AddInstr(FRE, 0);
             AddInstr(RET,0);
         }
         /***/
@@ -117,7 +119,7 @@ Ifheader: IF OPEN Expr {
 Cond: Ifheader Bloco {
                     prog[pega_end()].op = ip;
                 }
-    
+
     | Ifheader Bloco {
                     prog[pega_end()].op = ip + 1;
                     salva_end(ip);
@@ -163,7 +165,8 @@ Func: FUNC ID {
          newtab(0);
      }
      Args CLOSE  Bloco{
-         AddInstr(RET, 0);
+        /* AddInstr(FRE, 0);
+         AddInstr(RET, 0);*/
          prog[pega_end()].op = ip;
          deltab();
      }
@@ -188,6 +191,7 @@ Chamada:ID OPEN {
                 yyerror("Função não definida\n");
                 YYABORT;
             }
+            AddInstr(ALC, lastval());
             /* Cópia dos parâmetros */
             while (parmcnt > 0)
                 AddInstr( STO, --parmcnt);

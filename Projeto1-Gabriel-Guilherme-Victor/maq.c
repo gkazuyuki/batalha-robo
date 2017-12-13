@@ -77,6 +77,22 @@ void destroi_maquina(Maquina *m)
     free(m);
 }
 
+int new_frame(Maquina *m, int n) {
+    OPERANDO x;
+    x.n = m->bases.topo + n;
+    if (m->bases.topo < MAXFRM - 1) {
+        empilha(&m->bases, x);
+        return m->bases.topo;
+    }
+    return -1;
+}
+
+int del_frame(Maquina *m) {
+    //if (m->ib > 0) return --m->ib;
+    OPERANDO x = desempilha(&m->bases);
+    return -1;
+}
+
 /* Alguns macros para facilitar a leitura do código */
 #define ip (m->ip)
 #define pil (&m->pil)
@@ -160,6 +176,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
                 continue;
             }
             break;
+        /*
         case CALL: ;
             OPERANDO ip2;
             ip2.t = NUM;
@@ -175,6 +192,18 @@ void exec_maquina(Maquina *m, int n, FILE *display)
                 base.n = bases->val[bases->topo - 1].n;
                 ip = desempilha(exec).n;
             break;
+        */
+        case CALL: ;
+            OPERANDO ip2;
+            ip2.t = NUM;
+            ip2.n = ip;
+            empilha(exec, ip2);
+            ip = arg.n;
+            continue;
+        case RET: ;
+            ip = desempilha(exec).n;
+            break;
+
         case EQ: ;
             x = desempilha(pil), y = desempilha(pil);
             tmp.t = NUM;
@@ -290,12 +319,21 @@ void exec_maquina(Maquina *m, int n, FILE *display)
         case RCE: ;
             empilha(pil, exec->val[base.n + arg.n]);
             break;
-        case ALC: ;
+        /*case ALC: ;
             exec->topo += arg.n;
             break;
         case FRE: ;
             exec->topo -= arg.n;
             break;
+        */
+        case ALC: ;
+          new_frame(m, arg.n);
+          break;
+        case FRE: ;
+          del_frame(m);
+          break;
+
+
         case ATR: ;
             arg = desempilha(pil);
             x = desempilha(pil);
@@ -360,6 +398,5 @@ void exec_maquina(Maquina *m, int n, FILE *display)
         D(imprime(pil, 5));
         D(puts("\n"));
         ip++;
-        //sleep(1);
     }
 }

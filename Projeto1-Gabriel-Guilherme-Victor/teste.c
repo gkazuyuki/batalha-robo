@@ -21,7 +21,7 @@ int main(int ac, char **av) {
   	    p = fopen(*av,"r");
     res = compilador(p, p1);
     if (res) return 1;
-
+    
     FILE *display = popen("./apres", "w");
     Arena *nova_arena;
     nova_arena = InicializaArena(15, 1, display);
@@ -33,7 +33,134 @@ int main(int ac, char **av) {
     pos army_pos1[] = {{7, 7}};
 
     InsereExercito("Black_Templars", 1, hq_pos1, army_pos1, army_prog1, 1, display);
+    /*
+    for (int i; i < 2000; i++ ){
+        switch (p1[i].instr)
+            case 0:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
 
+            case 1:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 2:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 3:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 4:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 5:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 6:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 7:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 8:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 9:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 10:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 11:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 12:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 13:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 14:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 15:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 16:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 17:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 18:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 19:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 20:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 21:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 22:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 23:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 24:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 25:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 26:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 27:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 28:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 29:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+
+            case 30:
+                printf("%d  %d\n", p1[i].instr , p1[i].op );
+            break;
+    }
+    */
     while (arena.time < 1000)
         Atualiza(display);
     RemoveExercito("Black_Templars");
