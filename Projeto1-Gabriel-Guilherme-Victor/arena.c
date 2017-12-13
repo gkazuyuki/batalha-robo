@@ -31,7 +31,7 @@ char* concat(const char *s1, const char *s2, const char *s3)
                                      \____/
 
 */
-pos numToPos(int n, pos x)
+pos numToPos(int n, pos x, int size)
 {
     pos y;
     if (n == 0) {
@@ -70,6 +70,14 @@ pos numToPos(int n, pos x)
         else
             y.y = x.y;
     }
+    if (y.x < 0)
+        y.x = size - 1;
+    else
+        y.x = y.x % size;
+    if (y.y < 0)
+        y.y = size - 1;
+    else
+        y.y = y.y % size;
     return y;
 }
 
@@ -79,7 +87,7 @@ Arena *InicializaArena(int size, int army_number, FILE *display)
     new_arena->size = size;
     new_arena->army_number = army_number;
     new_arena->top = 0;
-    new_arena->time = 0; //FALTA O TEMPO AQUI
+    new_arena->time = 0;
     new_arena->next_id = 0;
 
     board new_board = emalloc(size*sizeof(node*)); //Criando tabuleiro nxn
@@ -204,11 +212,13 @@ void Sistema(Maquina *robo, FILE *display)
 {
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
     int in_swamp = 0;
-    pos temp = numToPos(aux.n, robo->position);
-    if (temp.x >= arena.size || temp.y >= arena.size){
+    pos temp = numToPos(aux.n, robo->position, arena.size);
+    /*
+    if (temp.x > arena.size || temp.y > arena.size){
         robo->counter += 1;
         return;
     }
+    */
     //Ação MOV
     if (tmp.ac == 0) {
         if (arena.Board[robo->position.x][robo->position.y].terrain == 2) in_swamp = 1; //sair do pantano para uma estrada custa 1

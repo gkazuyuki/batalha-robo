@@ -33,7 +33,7 @@ int main(int ac, char **av) {
     pos army_pos1[] = {{7, 7}};
 
     InsereExercito("Black_Templars", 1, hq_pos1, army_pos1, army_prog1, 1, display);
-
+    /*
     for (int i = 0; i < 2000; i++ ){
         switch (p1[i].instr) {
             case 0:
@@ -161,7 +161,7 @@ int main(int ac, char **av) {
             break;
         }
     }
-
+    */
     while (arena.time < 1000)
         Atualiza(display);
     RemoveExercito("Black_Templars");

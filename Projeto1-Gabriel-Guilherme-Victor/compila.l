@@ -1,3 +1,7 @@
+/* Guilherme Costa Vieira               Nº USP: 9790930
+   Gabriel Kazuyuki Isomura             Nº USP: 9793673
+   Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756 */
+
 D [0-9]
 L [a-zA-Z_]
 H [a-zA-Z_0-9]

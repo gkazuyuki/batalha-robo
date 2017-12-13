@@ -306,7 +306,7 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             arg = desempilha(pil);
             x = desempilha(pil);
             pos z;
-            z = numToPos(x.n, m->position);
+            z = numToPos(x.n, m->position, arena.size);
             y.t = NUM;
             if (arg.n == 0) {
                 y.n = arena.Board[z.x][z.y].terrain;

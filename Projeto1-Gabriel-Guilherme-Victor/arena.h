@@ -39,7 +39,7 @@ typedef struct {
 
 Arena arena;
 
-pos numToPos(int n, pos x);
+pos numToPos(int n, pos x, int size);
 
 void Atualiza(FILE *display);
 
