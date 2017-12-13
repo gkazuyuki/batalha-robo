@@ -1,4 +1,4 @@
-compila: compila.tab.o lex.yy.o symrec.o acertos.o maq.o pilha.o motor.o
+compila: compila.tab.o lex.yy.o symrec.o acertos.o maq.o pilha.o teste.o arena.o
 	gcc -o $@ $^ -lm -lfl
 
 compila.tab.o: compila.y
@@ -12,5 +12,3 @@ lex.yy.o: compila.l
 
 clean:
 	rm -f *.o lex.yy.c compila.tab.c compila.tab.h *~ compila
-
-
