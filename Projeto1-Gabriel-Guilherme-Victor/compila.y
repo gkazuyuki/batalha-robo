@@ -1,7 +1,8 @@
-/* Guilherme Costa Vieira               Nº USP: 9790930
-   Gabriel Kazuyuki Isomura             Nº USP: 9793673
-   Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756 */
-
+/*
+ * Guilherme Costa Vieira               Nº USP: 9790930
+ * Gabriel Kazuyuki Isomura             Nº USP: 9793673
+ * Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
+ */
 
 /* Compilador */
 
@@ -42,10 +43,6 @@ void AddInstr(OpCode op, int val) {
 %token ATKt ATRt MOVt FETCHt DEPOt
 
 
-// Maior precedência para else
-//%nonassoc THEN
-//%nonassoc ELSEX
-
 %right ASGN
 %left ADDt SUBt
 %left MULt DIVt
@@ -54,7 +51,7 @@ void AddInstr(OpCode op, int val) {
 %left LTt GTt LEt GEt EQt NEt
 
 
-/* Gramatica */
+/* Gramática */
 %%
 
 Programa: Comando
@@ -74,22 +71,21 @@ Comando: Expr EOL
             AddInstr(FRE, 0);
             AddInstr(RET,0);
         }
-        /***/
+
         | MOVt OPEN Expr CLOSE EOL { AddInstr(MOV, 0); }
         | FETCHt OPEN Expr CLOSE EOL { AddInstr(FETCH, 0); }
         | DEPOt OPEN Expr CLOSE EOL { AddInstr(DEPO, 0); }
         | ATKt OPEN Expr CLOSE EOL { AddInstr(ATK, 0); }
-        /**/
-        /* | EOL {printf("--> %d\n", ip);} */
+
 ;
 
 Expr: NUMt {  AddInstr(PUSH, $1);}
-    | ID   {
-	         symrec *s = getsym($1);
-			 if (s == 0)
+    | ID    {
+            symrec *s = getsym($1);
+            if (s == 0)
                 s = putsym($1);
-			    AddInstr(RCL, s->val);
-            }
+            AddInstr(RCL, s->val);
+        }
 	| ID ASGN  Expr {
                     symrec *s = getsym($1);
 			        if ( s == 0)
@@ -104,7 +100,6 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 	| Expr SUBt Expr { AddInstr(SUB,  0); }
 	| Expr MULt Expr { AddInstr(MUL,  0); }
 	| Expr DIVt Expr { AddInstr(DIV,  0); }
-    /*ver que CHS é esse*/
     | '-' Expr %prec NEG  { printf("  {CHS,  0},\n"); }
 	| OPEN Expr CLOSE
 	| Expr LTt Expr  { AddInstr(LT, 0);}
@@ -161,7 +156,7 @@ Func: FUNC ID {
 		if (s == 0)
             s = putsym($2);
 		else {
-            yyerror("Função definida duas vezes\n");
+            yyerror("Função definida duas vezes.\n");
             YYABORT;
 		}
         s->val = ip;
@@ -193,7 +188,7 @@ Chamada:ID OPEN {
         ListParms{
             symrec *s = getsym($1);
             if (s == 0) {
-                yyerror("Função não definida\n");
+                yyerror("Função não definida.\n");
                 YYABORT;
             }
             AddInstr(ALC, lastval());
@@ -214,7 +209,7 @@ ListParms:
 extern FILE *yyin;
 
 void yyerror(char const *msg) {
-    fprintf(stderr, "ERRO: %s", msg);
+    fprintf(stderr, "ERRO: %s\n", msg);
 }
 
 int compilador(FILE *cod, INSTR *dest) {

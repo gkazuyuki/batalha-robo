@@ -31,8 +31,8 @@ depo { return DEPOt; }
 fetch { return FETCHt; }
 
 {L}{H}* {
-  strncpy(yylval.cod, yytext, 30);
-  return ID;
+    strncpy(yylval.cod, yytext, 30);
+    return ID;
 }
 
 [ \t\n]+	/* pula espacos em branco */
@@ -57,7 +57,9 @@ fetch { return FETCHt; }
 ">"		{ return GTt; }
 ">="	{ return GEt; }
 
-.	{  fprintf(stderr, "Entrada ignorada\n-->%s\n", yytext); }
+.	{  fprintf(stderr, "ERRO: Caractere não suportado.\n-->%s\n", yytext);
+       exit(1);
+    }
 
 %%
 

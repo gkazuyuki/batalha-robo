@@ -2,7 +2,6 @@
 // Gabriel Kazuyuki Isomura             Nº USP: 9793673
 // Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "arena.h"
@@ -43,7 +42,8 @@ char *CODES[] = {
     "MOV",
     "FETCH",
     "DEPO",
-    "ATK"
+    "ATK",
+    "CHS"
 };
 #else
 #  define D(X)
@@ -184,7 +184,6 @@ void exec_maquina(Maquina *m, int n, FILE *display)
         case RET: ;
             ip = desempilha(exec).n;
             break;
-
         case EQ: ;
             x = desempilha(pil), y = desempilha(pil);
             tmp.t = NUM;
@@ -361,6 +360,10 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             tmp.ac = 30;
             empilha(pil, tmp);
             Sistema(m, display);
+            break;
+        case CHS: ;
+            arg = desempilha(pil);
+            empilha(pil, 0 - arg);
             break;
         }
         D(imprime(pil, 5));
