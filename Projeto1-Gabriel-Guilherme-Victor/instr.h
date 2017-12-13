@@ -9,7 +9,7 @@
 /* Códigos das instruções */
 typedef enum {
     PUSH,
-    POP, 
+    POP,
     DUP,
     ADD,
     SUB,
@@ -36,8 +36,7 @@ typedef enum {
     MOV,
     FETCH,
     DEPO,
-    ATK,
-    CHS
+    ATK
 } OpCode;
 
 /* Tipos dos operandos */

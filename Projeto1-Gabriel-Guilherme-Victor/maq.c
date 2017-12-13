@@ -42,8 +42,7 @@ char *CODES[] = {
     "MOV",
     "FETCH",
     "DEPO",
-    "ATK",
-    "CHS"
+    "ATK"
 };
 #else
 #  define D(X)
@@ -299,8 +298,6 @@ void exec_maquina(Maquina *m, int n, FILE *display)
         case FRE: ;
           del_frame(m);
           break;
-
-
         case ATR: ;
             arg = desempilha(pil);
             x = desempilha(pil);
@@ -360,10 +357,6 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             tmp.ac = 30;
             empilha(pil, tmp);
             Sistema(m, display);
-            break;
-        case CHS: ;
-            arg = desempilha(pil);
-            empilha(pil, 0 - arg);
             break;
         }
         D(imprime(pil, 5));

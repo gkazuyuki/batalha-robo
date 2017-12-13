@@ -100,7 +100,6 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 	| Expr SUBt Expr { AddInstr(SUB,  0); }
 	| Expr MULt Expr { AddInstr(MUL,  0); }
 	| Expr DIVt Expr { AddInstr(DIV,  0); }
-    | '-' Expr %prec NEG  { printf("  {CHS,  0},\n"); }
 	| OPEN Expr CLOSE
 	| Expr LTt Expr  { AddInstr(LT, 0);}
 	| Expr GTt Expr  { AddInstr(GT, 0);}

@@ -34,6 +34,9 @@ char* concat(const char *s1, const char *s2, const char *s3)
 pos numToPos(int n, pos x, int size)
 {
     pos y;
+    if (n < 0)
+        n = 5;
+    n = n % 6;
     if (n == 0) {
         y.x = x.x;
         y.y = x.y - 1;
@@ -213,12 +216,6 @@ void Sistema(Maquina *robo, FILE *display)
     OPERANDO tmp = desempilha(&robo->pil), aux = desempilha(&robo->pil);
     int in_swamp = 0;
     pos temp = numToPos(aux.n, robo->position, arena.size);
-    /*
-    if (temp.x > arena.size || temp.y > arena.size){
-        robo->counter += 1;
-        return;
-    }
-    */
     //Ação MOV
     if (tmp.ac == 0) {
         if (arena.Board[robo->position.x][robo->position.y].terrain == 2) in_swamp = 1; //sair do pantano para uma estrada custa 1

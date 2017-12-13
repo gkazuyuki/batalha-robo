@@ -8,163 +8,56 @@
 #include "maq.h"
 #include "arena.h"
 
-INSTR p1[2000];
+INSTR p1[20000];
+INSTR p2[20000];
+INSTR p3[20000];
+INSTR p4[20000];
 
 int compilador(FILE *, INSTR *);
 
-int main(int ac, char **av) {
-    FILE *p = stdin;
+int main()
+{
+    FILE *p;
 
     int res;
-    ac --; av++;
-    if (ac > 0)
-  	    p = fopen(*av,"r");
+  	p = fopen("prog1", "r");
     res = compilador(p, p1);
     if (res) return 1;
 
+    p = fopen("prog2" ,"r");
+    res = compilador(p, p2);
+    if (res) return 1;
+
+    p = fopen("prog3" ,"r");
+    res = compilador(p, p3);
+    if (res) return 1;
+
+    p = fopen("prog4" ,"r");
+    res = compilador(p, p4);
+    if (res) return 1;
+
+
     FILE *display = popen("./apres", "w");
     Arena *nova_arena;
-    nova_arena = InicializaArena(15, 1, display);
+    nova_arena = InicializaArena(15, 2, display);
     arena = *nova_arena;
 
 
-    INSTR *army_prog1[] = {p1};
+    INSTR *army_prog1[] = {p1, p2};
+    INSTR *army_prog2[] = {p3, p4};
+
     pos hq_pos1 = {3, 3};
-    pos army_pos1[] = {{7, 7}};
+    pos hq_pos2 = {10, 10};
+    pos army_pos1[] = {{7, 7}, {9, 9}};
+    pos army_pos2[] = {{3, 3}, {14, 7}};
 
-    InsereExercito("Black_Templars", 1, hq_pos1, army_pos1, army_prog1, 1, display);
-    /*
-    for (int i = 0; i < 2000; i++ ){
-        switch (p1[i].instr) {
-            case 0:
-                printf("PUSH  %d\n", p1[i].op );
-            break;
+    InsereExercito("Black_Templars", 2, hq_pos1, army_pos1, army_prog1, 1, display);
+    InsereExercito("Ultramarines", 2, hq_pos2, army_pos2, army_prog2, 2, display);
 
-            case 1:
-                printf("POP  %d\n", p1[i].op );
-            break;
-
-            case 2:
-                printf("DUP  %d\n", p1[i].op );
-            break;
-
-            case 3:
-                printf("ADD  %d\n", p1[i].op );
-            break;
-
-            case 4:
-                printf("SUB  %d\n", p1[i].op );
-            break;
-
-            case 5:
-                printf("MUL  %d\n", p1[i].op );
-            break;
-
-            case 6:
-                printf("DIV  %d\n", p1[i].op );
-            break;
-
-            case 7:
-                printf("JMP  %d\n", p1[i].op );
-            break;
-
-            case 8:
-                printf("JIT  %d\n", p1[i].op );
-            break;
-
-            case 9:
-                printf("JIF  %d\n", p1[i].op );
-            break;
-
-            case 10:
-                printf("CALL  %d\n", p1[i].op );
-            break;
-
-            case 11:
-                printf("RET  %d\n", p1[i].op );
-            break;
-
-            case 12:
-                printf("EQ  %d\n", p1[i].op );
-            break;
-
-            case 13:
-                printf("GT  %d\n", p1[i].op );
-            break;
-
-            case 14:
-                printf("GE  %d\n", p1[i].op );
-            break;
-
-            case 15:
-                printf("LT  %d\n", p1[i].op );
-            break;
-
-            case 16:
-                printf("LE  %d\n", p1[i].op );
-            break;
-
-            case 17:
-                printf("NE  %d\n", p1[i].op );
-            break;
-
-            case 18:
-                printf("STO  %d\n", p1[i].op );
-            break;
-
-            case 19:
-                printf("RCL  %d\n", p1[i].op );
-            break;
-
-            case 20:
-                printf("END  %d\n", p1[i].op );
-            break;
-
-            case 21:
-                printf("PRN  %d\n", p1[i].op );
-            break;
-
-            case 22:
-                printf("STL  %d\n", p1[i].op );
-            break;
-
-            case 23:
-                printf("RCE  %d\n", p1[i].op );
-            break;
-
-            case 24:
-                printf("ALC  %d\n", p1[i].op );
-            break;
-
-            case 25:
-                printf("FRE  %d\n", p1[i].op );
-            break;
-
-            case 26:
-                printf("ATR  %d\n", p1[i].op );
-            break;
-
-            case 27:
-                printf("MOV  %d\n", p1[i].op );
-            break;
-
-            case 28:
-                printf("FETCH  %d\n", p1[i].op );
-            break;
-
-            case 29:
-                printf("DEPO  %d\n", p1[i].op );
-            break;
-
-            case 30:
-                printf("ATK  %d\n", p1[i].op );
-            break;
-        }
-    }
-    */
     while (arena.time < 1000)
         Atualiza(display);
     RemoveExercito("Black_Templars");
+    RemoveExercito("Ultramarines");
     destroyArena(arena.size);
     pclose(display);
     return 0;

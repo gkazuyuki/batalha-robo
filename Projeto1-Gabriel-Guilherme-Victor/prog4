@@ -1,0 +1,15 @@
+# Guilherme Costa Vieira               Nº USP: 9790930
+# Gabriel Kazuyuki Isomura             Nº USP: 9793673
+# Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
+#Explicação no PDF
+
+i = 0;
+while(i < 20){
+    x = atr(i, 1);
+    if (x > 0){
+        fetch(i);
+    }
+    mov(1);
+    mov(i);
+    i = i + 1;
+}
