@@ -165,8 +165,8 @@ Func: FUNC ID {
          newtab(0);
      }
      Args CLOSE  Bloco{
-        /* AddInstr(FRE, 0);
-         AddInstr(RET, 0);*/
+         AddInstr(FRE, 0);
+         AddInstr(RET, 0);
          prog[pega_end()].op = ip;
          deltab();
      }

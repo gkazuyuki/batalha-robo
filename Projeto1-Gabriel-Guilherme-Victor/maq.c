@@ -69,6 +69,7 @@ Maquina *cria_maquina(INSTR *p)
     m->n_crystalls = 0;
     m->HP = 100;
     m->counter = 0;
+    m->ib = 0;
     return m;
 }
 
@@ -78,28 +79,25 @@ void destroi_maquina(Maquina *m)
 }
 
 int new_frame(Maquina *m, int n) {
-    OPERANDO x;
-    x.n = m->bases.topo + n;
-    if (m->bases.topo < MAXFRM - 1) {
-        empilha(&m->bases, x);
-        return m->bases.topo;
-    }
-    return -1;
+  int ibc = m->ib;
+  if (ibc < MAXFRM - 1) {
+	m->bp[++m->ib] = n + ibc;
+	return m->ib;
+  }
+  return -1;
 }
 
 int del_frame(Maquina *m) {
-    //if (m->ib > 0) return --m->ib;
-    OPERANDO x = desempilha(&m->bases);
-    return -1;
+  if (m->ib > 0) return --m->ib;
+  return -1;
 }
+
 
 /* Alguns macros para facilitar a leitura do código */
 #define ip (m->ip)
 #define pil (&m->pil)
 #define exec (&m->exec)
 #define prg (m->prog)
-#define base (m->base)
-#define bases (&m->bases)
 
 void exec_maquina(Maquina *m, int n, FILE *display)
 {
@@ -138,25 +136,25 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             empilha(pil, tmp);
             break;
         case ADD: ;
-            x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+            x = desempilha(pil), y = desempilha(pil);
             tmp.n = x.n + y.n;
             tmp.t = NUM;
             empilha(pil, tmp);
             break;
         case SUB: ;
-            x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+            x = desempilha(pil), y = desempilha(pil);
             tmp.n = y.n - x.n;
             tmp.t = NUM;
             empilha(pil, tmp);
             break;
         case MUL: ;
-            x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+            x = desempilha(pil), y = desempilha(pil);
             tmp.n = x.n * y.n;
             tmp.t = NUM;
             empilha(pil, tmp);
             break;
         case DIV: ;
-            x = desempilha(pil), y = desempilha(pil); //estamos supondo que esta tudo ok e que o cara sabe programar!!
+            x = desempilha(pil), y = desempilha(pil);
             tmp.n = y.n / x.n;
             tmp.t = NUM;
             empilha(pil, tmp);
@@ -176,23 +174,6 @@ void exec_maquina(Maquina *m, int n, FILE *display)
                 continue;
             }
             break;
-        /*
-        case CALL: ;
-            OPERANDO ip2;
-            ip2.t = NUM;
-            ip2.n = ip;
-            empilha(exec, ip2);
-            base.n = exec->topo;
-            empilha(bases, base);
-            ip = arg.n;
-            continue;
-        case RET: ;
-            desempilha(bases);
-            if (bases->topo != 0)
-                base.n = bases->val[bases->topo - 1].n;
-                ip = desempilha(exec).n;
-            break;
-        */
         case CALL: ;
             OPERANDO ip2;
             ip2.t = NUM;
@@ -301,10 +282,10 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             empilha(pil, tmp);
             break;
         case STO: ;
-            m->Mem[arg.n] = desempilha(pil);
+            m->Mem[arg.n + m->bp[m->ib]] = desempilha(pil);
             break;
         case RCL: ;
-            empilha(pil, m->Mem[arg.n]); // Mudar isso (empilhar várias fita)
+            empilha(pil, m->Mem[arg.n + m->bp[m->ib]]);
             break;
         case END: ;
             return;
@@ -313,19 +294,6 @@ void exec_maquina(Maquina *m, int n, FILE *display)
             if (x.t == NUM) printf("%d\n", x.n);
             else if (x.t == ACAO) printf ("%d\n", x.ac);
             break;
-        case STL: ;
-            exec->val[base.n + arg.n] = desempilha(pil);
-            break;
-        case RCE: ;
-            empilha(pil, exec->val[base.n + arg.n]);
-            break;
-        /*case ALC: ;
-            exec->topo += arg.n;
-            break;
-        case FRE: ;
-            exec->topo -= arg.n;
-            break;
-        */
         case ALC: ;
           new_frame(m, arg.n);
           break;

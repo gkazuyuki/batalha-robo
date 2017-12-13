@@ -2,7 +2,6 @@
 // Gabriel Kazuyuki Isomura             Nº USP: 9793673
 // Victor Chiaradia Gramuglia Araujo    Nº USP: 9793756
 
-
 #ifndef __MAQ_H__
 #define __MAQ_H__
 
@@ -18,10 +17,10 @@ typedef struct {
 typedef struct {
     Pilha pil;
     Pilha exec;
-    Pilha bases;
     OPERANDO Mem[MAXMEM];
+    int bp[MAXFRM];
+    int ib;
     INSTR *prog;
-    OPERANDO base;
     int ip;
     int id;
     int armyID;
