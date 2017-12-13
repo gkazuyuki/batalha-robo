@@ -13,3 +13,4 @@ while(i < 20){
     mov(i);
     i = i + 1;
 }
+depo(i);

@@ -4,4 +4,4 @@
 
     Para compilar o teste enviado basta digitar "$ make". O comando "$ make clean"
 foi feito para ajudar. Se desejar mudar algum argumento no teste isso deve ser
-feito no .c, pois o executável não recebe argumentos.
+feito no .c, pois o executável não recebe argumentos. Execute usando "$ ./compila".
